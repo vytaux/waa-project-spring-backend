@@ -2,8 +2,12 @@ package com.theateam.waaprojectspringbackend.entity.dto.response;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
-public class CommentResponseDto {
+public class PropertyResponseDto {
     long id;
     String name;
+    String description;
+    BigDecimal price;
 }

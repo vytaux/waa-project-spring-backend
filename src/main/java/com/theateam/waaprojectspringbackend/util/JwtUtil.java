@@ -1,12 +1,12 @@
 package com.theateam.waaprojectspringbackend.util;
 
+import com.theateam.waaprojectspringbackend.entity.Role;
 import io.jsonwebtoken.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
@@ -47,6 +47,13 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+
+        // TODO not the best place to do this???
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        userDetails.getAuthorities().forEach(authority -> claims.put("roles", roles));
+
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
