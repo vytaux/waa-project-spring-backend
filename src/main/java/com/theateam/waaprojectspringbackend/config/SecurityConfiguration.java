@@ -39,11 +39,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/customers/**").hasAuthority(RoleName.ROLE_CUSTOMER.name())
                 .antMatchers("/api/v1/owners/**").hasAuthority(RoleName.ROLE_OWNER.name())
                 .antMatchers("/api/v1/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())
+                // Necessary for H2 console access
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().permitAll() // Allow access to all other URLs
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                // Don't remember... But important, either cors, or h2-console
                 .headers().frameOptions().disable()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
