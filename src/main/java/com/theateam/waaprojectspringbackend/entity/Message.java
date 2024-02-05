@@ -1,6 +1,7 @@
 package com.theateam.waaprojectspringbackend.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,10 +15,11 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany
-    private List<MessageSession> messageSessionIdList;
     private String message;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
     @ManyToOne
     private User createdBy;
 }
