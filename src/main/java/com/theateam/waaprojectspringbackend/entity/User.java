@@ -1,5 +1,6 @@
 package com.theateam.waaprojectspringbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,11 +16,23 @@ public class User {
     private long id;
 
     private String email;
+    @JsonIgnore
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private User.Status status;
+
+    public enum Status {
+        STATUS_PENDING,
+        STATUS_APPROVED
+    }
+
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
     private List<Property> properties = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "user_id"),

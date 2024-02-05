@@ -1,24 +1,29 @@
 package com.theateam.waaprojectspringbackend.controller;
 
+import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.repository.UserRepo;
+import com.theateam.waaprojectspringbackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
 @CrossOrigin
+@RequiredArgsConstructor
 public class AdminController {
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "Greetings from admin/dashboard!";
-    }
+    private final UserRepo userRepo;
+    private final UserService userService;
 
     @GetMapping("/owners/pending")
-    public String adminOwnersPending() {
-        return "Greetings from admin/owners/pending!";
+    public List<User> adminOwnersPending() {
+        return userRepo.findByStatus(User.Status.STATUS_PENDING);
     }
 
-    @PutMapping("/admin/owners/:ownerId/approve")
-    public String adminOwnersOwnerApprove() {
-        return "Greetings from admin/owners/owner/approve!";
+    @PutMapping("/owners/{ownerId}/approve")
+    public void adminOwnersOwnerApprove(@PathVariable Long ownerId) {
+        userService.approveUser(ownerId);
     }
 }
