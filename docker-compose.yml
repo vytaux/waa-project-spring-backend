@@ -1,0 +1,11 @@
+services:
+
+  postgres:
+    container_name: pms_db
+    image: postgres
+    environment:
+      POSTGRES_USER: pms
+      POSTGRES_PASSWORD: pms
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
