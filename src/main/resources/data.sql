@@ -1,7 +1,7 @@
 -- password=123
-INSERT INTO users (id, email, password) VALUES (1, 'admin', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
-INSERT INTO users (id, email, password) VALUES (2, 'owner', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
-INSERT INTO users (id, email, password) VALUES (3, 'customer', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (1, 'admin', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (2, 'owner', 'STATUS_PENDING', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (3, 'customer', 'STATUS_PENDING', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
 
 INSERT INTO roles (id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO roles (id, name) VALUES (2, 'ROLE_OWNER');

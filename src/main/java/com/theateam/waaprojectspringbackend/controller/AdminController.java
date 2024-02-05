@@ -1,11 +1,19 @@
 package com.theateam.waaprojectspringbackend.controller;
 
+import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.repository.UserRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
 @CrossOrigin
+@RequiredArgsConstructor
 public class AdminController {
+
+    private final UserRepo userRepo;
 
     @GetMapping("/dashboard")
     public String dashboard() {
@@ -13,11 +21,11 @@ public class AdminController {
     }
 
     @GetMapping("/owners/pending")
-    public String adminOwnersPending() {
-        return "Greetings from admin/owners/pending!";
+    public List<User> adminOwnersPending() {
+        return userRepo.findByStatus(User.Status.STATUS_PENDING);
     }
 
-    @PutMapping("/admin/owners/:ownerId/approve")
+    @PutMapping("/owners/:ownerId/approve")
     public String adminOwnersOwnerApprove() {
         return "Greetings from admin/owners/owner/approve!";
     }
