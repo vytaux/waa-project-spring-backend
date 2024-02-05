@@ -47,7 +47,7 @@ public class AuthService {
         }
 
         // TODO don't allow save ROLE_ADMIN!!!
-        Role role = roleRepo.findByName(registerRequest.getRole());
+        Role role = roleRepo.findByRoleType(registerRequest.getRole());
         user.getRoles().add(role);
 
         userRepo.save(user);

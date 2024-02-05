@@ -1,6 +1,6 @@
 package com.theateam.waaprojectspringbackend.config;
 
-import com.theateam.waaprojectspringbackend.entity.Role.RoleName;
+import com.theateam.waaprojectspringbackend.entity.RoleType;
 import com.theateam.waaprojectspringbackend.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,9 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
                 .authorizeRequests()
-                .antMatchers("/api/v1/customers/**").hasAuthority(RoleName.ROLE_CUSTOMER.name())
-                .antMatchers("/api/v1/owners/**").hasAuthority(RoleName.ROLE_OWNER.name())
-                .antMatchers("/api/v1/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())
+                .antMatchers("/api/v1/customers/**").hasAuthority(RoleType.CUSTOMER.name())
+                .antMatchers("/api/v1/owners/**").hasAuthority(RoleType.OWNER.name())
+                .antMatchers("/api/v1/admin/**").hasAuthority(RoleType.ADMIN.name())
                 // Necessary for H2 console access
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().permitAll() // Allow access to all other URLs

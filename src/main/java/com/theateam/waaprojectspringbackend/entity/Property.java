@@ -1,12 +1,9 @@
 package com.theateam.waaprojectspringbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -24,13 +21,7 @@ public class Property {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private Property.Status status;
-
-    public enum Status {
-        STATUS_AVAILABLE,
-        STATUS_PENDING,
-        STATUS_CONTINGENT
-    }
+    private PropertyStatus status;
 
     @ManyToOne
     private User owner;

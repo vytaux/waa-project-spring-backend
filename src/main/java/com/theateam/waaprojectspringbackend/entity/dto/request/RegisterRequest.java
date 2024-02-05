@@ -1,6 +1,6 @@
 package com.theateam.waaprojectspringbackend.entity.dto.request;
 
-import com.theateam.waaprojectspringbackend.entity.Role.RoleName;
+import com.theateam.waaprojectspringbackend.entity.RoleType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,5 +9,5 @@ import lombok.Data;
 public class RegisterRequest {
     private String email;
     private String password;
-    private RoleName role;
+    private RoleType role;
 }
