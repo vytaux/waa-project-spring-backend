@@ -1,10 +1,12 @@
 package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.Offer;
+import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
+import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -23,8 +26,8 @@ import java.util.List;
 public class CustomersController {
 
     private final OfferService offerService;
-    private final UserRepo userRepo;
     private final UserService userService;
+    private final UserRepo userRepo;
 
     @GetMapping("/offers")
     public List<Offer> offersHistory() {

@@ -29,7 +29,6 @@ public class Property {
 
     @JsonIgnore
     @ManyToOne
-    @JsonIgnore
     private User owner;
 
     @JsonIgnore
