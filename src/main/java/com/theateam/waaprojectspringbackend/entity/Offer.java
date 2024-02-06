@@ -20,6 +20,7 @@ public class Offer {
     private BigDecimal price;
 
     @ManyToOne
+    @JsonIgnore
     private User customer;
 
     @Enumerated(EnumType.STRING)
@@ -27,6 +28,7 @@ public class Offer {
     private OfferStatus status;
 
     @OneToOne
+    @JsonIgnore
     private Property property;
 
 }

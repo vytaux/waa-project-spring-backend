@@ -1,6 +1,5 @@
 package com.theateam.waaprojectspringbackend.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.theateam.waaprojectspringbackend.entity.Role;
 import com.theateam.waaprojectspringbackend.entity.User;
 import org.springframework.security.core.GrantedAuthority;

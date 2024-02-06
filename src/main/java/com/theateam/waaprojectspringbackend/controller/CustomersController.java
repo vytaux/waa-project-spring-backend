@@ -3,7 +3,6 @@ package com.theateam.waaprojectspringbackend.controller;
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
-import com.theateam.waaprojectspringbackend.exception.CustomException;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.service.UserService;

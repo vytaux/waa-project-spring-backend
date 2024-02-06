@@ -1,5 +1,6 @@
 package com.theateam.waaprojectspringbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Property {
     private PropertyStatus status;
 
     @ManyToOne
+    @JsonIgnore
     private User owner;
 
     @OneToOne(mappedBy = "property")
