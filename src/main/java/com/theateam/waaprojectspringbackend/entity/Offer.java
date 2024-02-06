@@ -25,5 +25,4 @@ public class Offer {
     @OneToOne
     private Property property;
 
-
 }

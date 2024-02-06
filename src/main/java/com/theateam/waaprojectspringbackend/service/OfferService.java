@@ -16,5 +16,7 @@ public interface OfferService {
 
     void createOffer(String username, CreateOfferDto createOfferDto);
 
-    List<Offer> getAllOfferByCustomerId(int userId);
+    List<Offer> getAllOfferByCustomerId(Long userId);
+
+    List<Offer> getOfferByStatusAndCustomer(Long customerId, OfferStatus status);
 }
