@@ -2,10 +2,15 @@ package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
 import com.theateam.waaprojectspringbackend.service.OfferService;
+import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -14,6 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class CustomersController {
 
     private final OfferService offerService;
+    private final UserService userService;
+
+    @GetMapping
+    public List<User> getAllUsers(){
+        return userService.getAllUser();
+    }
 
     @GetMapping("/offers/history")
     public String offersHistory() {

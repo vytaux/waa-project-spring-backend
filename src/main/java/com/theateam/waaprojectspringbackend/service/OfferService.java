@@ -12,28 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class OfferService {
+public interface OfferService {
 
-    private final OfferRepo offerRepo;
-    private final PropertyRepo propertyRepo;
-    private final UserRepo userRepo;
-    private final ModelMapper modelMapper;
+    void createOffer(String username, CreateOfferDto createOfferDto);
 
-    public void createOffer(String username, CreateOfferDto createOfferDto) {
-        User user = userRepo.findByEmail(username).orElseThrow();
-
-        List<PropertyStatus> statuses = List.of(PropertyStatus.STATUS_AVAILABLE, PropertyStatus.STATUS_PENDING);
-        Property property = propertyRepo
-                .findByIdAndStatusIn(createOfferDto.getPropertyId(), statuses)
-                .orElseThrow();
-
-        Offer offer = modelMapper.map(createOfferDto, Offer.class);
-        offer.setProperty(property);
-        offer.setCustomer(user);
-
-        offerRepo.save(offer);
-    }
+    List<Offer> getAllOfferByCustomerId(int userId);
 }
