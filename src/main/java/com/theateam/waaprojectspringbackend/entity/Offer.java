@@ -22,6 +22,10 @@ public class Offer {
     @ManyToOne
     private User customer;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private OfferStatus status;
+
     @OneToOne
     private Property property;
 

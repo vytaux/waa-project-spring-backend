@@ -31,7 +31,7 @@ public class CustomersController {
         return userService.getAllUser();
     }
 
-    @GetMapping("{id}/offers")
+    @GetMapping("{id}/offers/history")
     public List<Offer> getAllOffersHistory(@PathVariable Long id) {
         return offerService.getAllOfferByCustomerId(id);
     }
