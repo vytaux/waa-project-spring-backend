@@ -38,6 +38,10 @@ public class PropertyService {
 
     public void create(String email, PropertyRequestDto propertyRequestDto) {
         User user = userRepo.findByEmail(email).orElseThrow();
+        if (!user.getStatus().equals(UserStatus.STATUS_APPROVED)) {
+            throw new RuntimeException("User is not approved");
+        }
+
         Property property = modelMapper.map(propertyRequestDto, Property.class);
         property.setStatus(PropertyStatus.STATUS_AVAILABLE);
         property.setOwner(user);
@@ -48,5 +52,9 @@ public class PropertyService {
         Property property = propertyRepo.findById(propertyId).orElseThrow();
         modelMapper.map(propertyRequestDto, property);
         propertyRepo.save(property);
+    }
+
+    public void delete(Long propertyId) {
+        propertyRepo.deleteById(propertyId);
     }
 }

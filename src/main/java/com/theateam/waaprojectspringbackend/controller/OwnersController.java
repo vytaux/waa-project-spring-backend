@@ -54,8 +54,8 @@ public class OwnersController {
     }
 
     @DeleteMapping("/properties/{propertyId}")
-    public String deleteProperty() {
-        return "Greetings from Owners deleteProperty!";
+    public void deleteProperty(@PathVariable Long propertyId) {
+        propertyService.delete(propertyId);
     }
 
     @GetMapping("/offers")
