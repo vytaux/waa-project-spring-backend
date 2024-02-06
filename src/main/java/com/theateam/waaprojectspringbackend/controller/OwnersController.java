@@ -2,6 +2,7 @@ package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.Property;
+import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
@@ -23,19 +24,21 @@ public class OwnersController {
     private final PropertyService propertyService;
 
     @PostMapping("/properties")
-    public String properties() {
-        return "Greetings from Owners properties!";
+    public void createProperty(@RequestBody PropertyRequestDto propertyRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        propertyService.create(authentication.getName(), propertyRequestDto);
+    }
+
+    @PutMapping("/properties/{propertyId}")
+    public void updateProperty(@PathVariable Long propertyId, @RequestBody PropertyRequestDto propertyRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        propertyService.update(authentication.getName(), propertyId, propertyRequestDto);
     }
 
     @GetMapping("/properties")
     public List<Property> getAllProperties() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return propertyService.findAllByOwnerEmail(authentication.getName());
-    }
-
-    @PutMapping("/properties/{propertyId}")
-    public String updateProperty() {
-        return "Greetings from Owners updateProperty!";
     }
 
     @PutMapping("/properties/{propertyId}/turnContingent")
