@@ -1,12 +1,19 @@
 package com.theateam.waaprojectspringbackend.controller;
 
-import org.springframework.security.access.annotation.Secured;
+import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
+import com.theateam.waaprojectspringbackend.service.OfferService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/customers")
 @CrossOrigin
 public class CustomersController {
+
+    private final OfferService offerService;
 
     @GetMapping("/offers/history")
     public String offersHistory() {
@@ -19,8 +26,9 @@ public class CustomersController {
     }
 
     @PostMapping("/offers")
-    public String offers() {
-        return "Greetings from Customers offers!";
+    public void createOffer(@RequestBody CreateOfferDto createOfferDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        offerService.createOffer(authentication.getName(), createOfferDto);
     }
 
     @GetMapping("/saved-properties")
@@ -46,10 +54,5 @@ public class CustomersController {
     @GetMapping("/offers/placed")
     public String getPlacedOffers() {
         return "Greetings from Customers placedOffers!";
-    }
-
-    @GetMapping("/receipt/{offerId}")
-    public String downloadReceiptForOffer() {
-        return "Greetings from Customers downloadReceiptForOffer!";
     }
 }

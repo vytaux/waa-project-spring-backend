@@ -15,8 +15,7 @@ public class AwesomeUserDetails implements UserDetails {
 
     private final String email;
 
-    @JsonIgnore
-    private String password;
+    private final String password;
 
     private final List<Role> roles;
 

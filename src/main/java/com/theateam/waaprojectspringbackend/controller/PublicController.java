@@ -31,7 +31,7 @@ public class PublicController {
 
     @RequestMapping("/properties/{slug}")
     public PropertyDetailsResponseDto getPropertyDetails(@PathVariable String slug) {
-        Property property = propertyRepo.findBySlug(slug);
+        Property property = propertyRepo.findBySlug(slug).orElseThrow();
         return modelMapper.map(property, PropertyDetailsResponseDto.class);
     }
 }

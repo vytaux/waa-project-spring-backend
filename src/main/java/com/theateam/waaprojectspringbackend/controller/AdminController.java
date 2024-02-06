@@ -1,6 +1,7 @@
 package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.entity.UserStatus;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class AdminController {
 
     @GetMapping("/owners/pending")
     public List<User> adminOwnersPending() {
-        return userRepo.findByStatus(User.Status.STATUS_PENDING);
+        return userRepo.findByStatus(UserStatus.STATUS_WAITING_FOR_APPROVAL);
     }
 
     @PutMapping("/owners/{ownerId}/approve")

@@ -26,4 +26,7 @@ public class Property {
 
     @ManyToOne
     private User owner;
+
+    @OneToOne(mappedBy = "property")
+    private Offer offer;
 }

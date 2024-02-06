@@ -20,13 +20,8 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private User.Status status;
-
-    public enum Status {
-        STATUS_PENDING,
-        STATUS_APPROVED
-    }
+    @Column(length = 30)
+    private UserStatus status;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
@@ -39,4 +34,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
+    private List<Offer> offers = new ArrayList<>();
 }

@@ -2,6 +2,7 @@ package com.theateam.waaprojectspringbackend.service;
 
 import com.theateam.waaprojectspringbackend.entity.Role;
 import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.entity.UserStatus;
 import com.theateam.waaprojectspringbackend.entity.dto.request.LoginRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.request.RefreshTokenRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.request.RegisterRequest;
@@ -29,7 +30,7 @@ public class UserService {
 
     public void approveUser(Long userId) {
         User user = userRepo.findById(userId).orElseThrow();
-        user.setStatus(User.Status.STATUS_APPROVED);
+        user.setStatus(UserStatus.STATUS_APPROVED);
         userRepo.save(user);
     }
 }
