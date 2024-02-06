@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PropertyRepo extends JpaRepository<Property, Long> {
+    Property findBySlug(String slug);
 }

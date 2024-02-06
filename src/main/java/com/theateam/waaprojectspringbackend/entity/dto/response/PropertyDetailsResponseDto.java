@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class PropertyResponseDto {
+public class PropertyDetailsResponseDto {
     long id;
     String name;
     String description;
