@@ -19,9 +19,15 @@ public class Offer {
     private String message;
     private BigDecimal price;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private OfferStatus status;
+
+    @JsonIgnore
     @ManyToOne
     private User customer;
 
-    @OneToOne
+    @JsonIgnore
+    @ManyToOne
     private Property property;
 }

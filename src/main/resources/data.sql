@@ -16,7 +16,7 @@ INSERT INTO users_roles (user_id, role_id) VALUES (2, 2);
 INSERT INTO users_roles (user_id, role_id) VALUES (3, 3);
 
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (1, 'property-first', 'STATUS_AVAILABLE', 'Property 1', 'Description 1', 100000, 2);
+    VALUES (1, 'property-first', 'STATUS_AVAILABLE', 'Property 1', 'Description 1', 100000, 1);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
     VALUES (2, 'propetyu-2' , 'STATUS_AVAILABLE','Property 2', 'Description 2', 300000, 2);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)

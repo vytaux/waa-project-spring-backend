@@ -33,7 +33,24 @@ public class OfferService {
         Offer offer = modelMapper.map(createOfferDto, Offer.class);
         offer.setProperty(property);
         offer.setCustomer(user);
+        offer.setStatus(OfferStatus.STATUS_NEW);
 
+        offerRepo.save(offer);
+    }
+
+    public void acceptOffer(Long offerId) {
+        Offer offer = offerRepo.findById(offerId).orElseThrow();
+        offer.setStatus(OfferStatus.STATUS_ACCEPTED);
+        offerRepo.save(offer);
+        // Now turn property pending
+        Property property = propertyRepo.findById(offer.getProperty().getId()).orElseThrow();
+        property.setStatus(PropertyStatus.STATUS_PENDING);
+        propertyRepo.save(property);
+    }
+
+    public void rejectOffer(Long offerId) {
+        Offer offer = offerRepo.findById(offerId).orElseThrow();
+        offer.setStatus(OfferStatus.STATUS_REJECTED);
         offerRepo.save(offer);
     }
 }

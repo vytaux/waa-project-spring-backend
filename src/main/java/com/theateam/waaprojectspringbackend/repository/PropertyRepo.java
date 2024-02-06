@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface PropertyRepo extends JpaRepository<Property, Long> {
     Optional<Property> findBySlug(String slug);
     Optional<Property> findByIdAndStatusIn(Long propertyId, List<PropertyStatus> statuses);
+    List<Property> findAllByOwnerEmail(String email);
 }

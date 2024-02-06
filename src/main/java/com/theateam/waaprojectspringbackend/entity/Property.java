@@ -1,9 +1,12 @@
 package com.theateam.waaprojectspringbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,9 +27,11 @@ public class Property {
     @Column(length = 20)
     private PropertyStatus status;
 
+    @JsonIgnore
     @ManyToOne
     private User owner;
 
-    @OneToOne(mappedBy = "property")
-    private Offer offer;
+    @JsonIgnore
+    @OneToMany(mappedBy = "property")
+    private List<Offer> offers = new ArrayList<>();
 }

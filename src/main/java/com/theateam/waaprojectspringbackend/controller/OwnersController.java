@@ -1,12 +1,26 @@
 package com.theateam.waaprojectspringbackend.controller;
 
-import org.springframework.security.access.annotation.Secured;
+import com.theateam.waaprojectspringbackend.entity.Offer;
+import com.theateam.waaprojectspringbackend.entity.Property;
+import com.theateam.waaprojectspringbackend.repository.OfferRepo;
+import com.theateam.waaprojectspringbackend.service.OfferService;
+import com.theateam.waaprojectspringbackend.service.PropertyService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/owners")
 @CrossOrigin
+@RequiredArgsConstructor
 public class OwnersController {
+
+    private final OfferRepo offerRepo;
+    private final OfferService offerService;
+    private final PropertyService propertyService;
 
     @PostMapping("/properties")
     public String properties() {
@@ -14,13 +28,26 @@ public class OwnersController {
     }
 
     @GetMapping("/properties")
-    public String getAllProperties() {
-        return "Greetings from Owners getAllPoperties!";
+    public List<Property> getAllProperties() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return propertyService.findAllByOwnerEmail(authentication.getName());
     }
 
     @PutMapping("/properties/{propertyId}")
     public String updateProperty() {
         return "Greetings from Owners updateProperty!";
+    }
+
+    @PutMapping("/properties/{propertyId}/turnContingent")
+    public void turnPropertyContingent(@PathVariable Long propertyId) {
+        // TODO if we already have 1 accepted, refuse
+        // TODO disable buttons in frontend if theres 1 offer accepted
+        propertyService.turnPropertyContingent(propertyId);
+    }
+
+    @PutMapping("/properties/{propertyId}/cancelContingency")
+    public void cancelPropertyContingency(@PathVariable Long propertyId) {
+        propertyService.cancelPropertyContingency(propertyId);
     }
 
     @DeleteMapping("/properties/{propertyId}")
@@ -29,18 +56,20 @@ public class OwnersController {
     }
 
     @GetMapping("/offers")
-    public String offers() {
-        return "Greetings from Owners offers!";
+    public List<Offer> offers() {
+        return offerRepo.findAll();
     }
 
-    @PutMapping("/offers/:offerId/reject")
-    public String rejectOffer() {
-        return "Greetings from Owners rejectOffer!";
+    @PutMapping("/offers/{offerId}/accept")
+    public void acceptOffer(@PathVariable Long offerId) {
+        // TODO if we already have 1 accepted, refuse
+        // TODO disable buttons in frontend if theres 1 offer accepted
+        offerService.acceptOffer(offerId);
     }
 
-    @PutMapping("/offers/:offerId/accept")
-    public String acceptOffer() {
-        return "Greetings from Owners acceptOffer!";
+    @PutMapping("/offers/{offerId}/reject")
+    public void rejectOffer(@PathVariable Long offerId) {
+        offerService.rejectOffer(offerId);
     }
 
     @PutMapping("/messages")
