@@ -16,11 +16,11 @@ public class MessageSession {
 
     @ManyToOne
     @JoinColumn(name = "user_one")
-    private User userId1;
+    private User userOne;
 
     @ManyToOne
     @JoinColumn(name = "user_two")
-    private User userId2;
+    private User userTwo;
 
     @OneToMany
     @JoinColumn(name = "message_session_id")
