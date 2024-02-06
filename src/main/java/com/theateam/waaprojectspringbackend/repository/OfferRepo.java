@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface OfferRepo extends JpaRepository<Offer, Long> {
 
+    List<Offer> findByCustomer_Id(int userId);
 }

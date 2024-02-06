@@ -6,6 +6,8 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
+import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
