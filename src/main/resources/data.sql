@@ -21,3 +21,13 @@ INSERT INTO properties (id, slug, status, name, description, price, owner_id)
     VALUES (92, 'propetyu-2' , 'STATUS_AVAILABLE','Property 2', 'Description 2', 300000, 92);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
     VALUES (93, 'property-thre', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 92);
+    VALUES (3, 'property-thre', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 2);
+
+-- Offer
+
+INSERT INTO offers (id, message, price, customer_id, status, property_id)
+    VALUES(1, 'Hey this is my offer', 5000000.00, 1, 'OFFER_AVAILABLE', 1 );
+INSERT INTO offers (id, message, price, customer_id, status, property_id)
+VALUES(2, 'Hey this is Last offer', 58373000.00, 2, 'OFFER_PENDING', 2 );
+INSERT INTO offers (id, message, price, customer_id, status, property_id)
+VALUES(3, 'Here is the offer', 746258984.00, 3, 'OFFER_CONTINGENT', 3);

@@ -1,14 +1,15 @@
 package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.Offer;
+import com.theateam.waaprojectspringbackend.entity.Offer;
+import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
-import com.theateam.waaprojectspringbackend.repository.OfferRepo;
-import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
-import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class CustomersController {
 
     private final OfferService offerService;
     private final UserRepo userRepo;
+    private final UserService userService;
 
     @GetMapping("/offers")
     public List<Offer> offersHistory() {
@@ -31,9 +33,21 @@ public class CustomersController {
         return user.getOffers();
     }
 
-    @GetMapping("/offers/current")
-    public String offersCurrent() {
-        return "Greetings from Customers offers/current!";
+    @GetMapping("{id}/offers/history")
+    public List<Offer> getAllOffersHistory(@PathVariable Long id) {
+        return offerService.getAllOfferByCustomerId(id);
+    }
+
+    @GetMapping("{id}/offers")
+    public ResponseEntity<List<Offer>> getOffersByStatusAndCustomer(@PathVariable Long id, @RequestParam("status") String status) {
+        try {
+            List<Offer> offers = offerService.getOfferByStatusAndCustomer(id, OfferStatus.valueOf(status));
+            return ResponseEntity.ok(offers);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/offers")
