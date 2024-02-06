@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
-@Table(name = "properties")
+@Table(name = "properties", indexes = @Index(name = "slug", columnList = "slug"))
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +15,7 @@ public class Property {
 
     private String name;
     private String description;
+    private String slug;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal price;

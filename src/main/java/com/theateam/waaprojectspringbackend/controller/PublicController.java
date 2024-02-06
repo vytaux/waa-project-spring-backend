@@ -1,6 +1,7 @@
 package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.Property;
+import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsResponseDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,11 @@ public class PublicController {
         return allProperties.stream()
                 .map(property -> modelMapper.map(property, PropertyResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping("/properties/{slug}")
+    public PropertyDetailsResponseDto getPropertyDetails(@PathVariable String slug) {
+        Property property = propertyRepo.findBySlug(slug);
+        return modelMapper.map(property, PropertyDetailsResponseDto.class);
     }
 }
