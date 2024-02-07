@@ -2,6 +2,8 @@
 INSERT INTO users (id, email, status, password) VALUES (91, 'admin', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
 INSERT INTO users (id, email, status, password) VALUES (92, 'owner', 'STATUS_WAITING_FOR_APPROVAL', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
 INSERT INTO users (id, email, status, password) VALUES (93, 'customer', 'STATUS_WAITING_FOR_APPROVAL', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (94, 'john', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (95, 'jane', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
 
 
 INSERT INTO roles (id, roletype) VALUES (91, 'ADMIN');
@@ -14,6 +16,8 @@ INSERT INTO users_roles (user_id, role_id) VALUES (91, 92);
 INSERT INTO users_roles (user_id, role_id) VALUES (91, 93);
 INSERT INTO users_roles (user_id, role_id) VALUES (92, 92);
 INSERT INTO users_roles (user_id, role_id) VALUES (93, 93);
+INSERT INTO users_roles (user_id, role_id) VALUES (94, 92);
+INSERT INTO users_roles (user_id, role_id) VALUES (95, 93);
 
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
     VALUES (91, 'property-first', 'STATUS_AVAILABLE', 'Property 1', 'Description 1', 100000, 91);
@@ -29,3 +33,13 @@ INSERT INTO offers (id, message, price, customer_id, status, property_id)
     VALUES(92, 'Hey this is Last offer', 58373000.00, 92, 'STATUS_NEW', 92 );
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
     VALUES(93, 'Here is the offer', 746258984.00, 93, 'STATUS_NEW', 93);
+INSERT INTO properties (id, name, description, price, owner_id) VALUES (1, 'Property 1', 'Description 1', 100000, 2);
+INSERT INTO properties (id, name, description, price, owner_id) VALUES (2, 'Property 2', 'Description 2', 300000, 2);
+INSERT INTO properties (id, name, description, price, owner_id) VALUES (3, 'Property 3', 'Description 3', 250000, 2);
+
+INSERT INTO message_session(user_one_id, user_two_id) VALUES (92, 93);
+
+INSERT INTO message(message, message_session_id, created_by_id, created_at) VALUES ('hi', 1, 93, '2024-02-04');
+INSERT INTO message(message, message_session_id, created_by_id, created_at) VALUES ('hello', 1, 92, '2024-02-04');
+INSERT INTO message(message, message_session_id, created_by_id, created_at) VALUES ('How are you?', 1, 92, '2024-02-04');
+INSERT INTO message(message, message_session_id, created_by_id, created_at) VALUES ('I am Good', 1, 93, '2024-02-04');
