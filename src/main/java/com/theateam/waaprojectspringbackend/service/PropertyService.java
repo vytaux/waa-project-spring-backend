@@ -1,65 +1,24 @@
 package com.theateam.waaprojectspringbackend.service;
 
-import com.theateam.waaprojectspringbackend.entity.*;
+import com.theateam.waaprojectspringbackend.entity.Property;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
-import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
-import com.theateam.waaprojectspringbackend.repository.UserRepo;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class PropertyService {
+public interface PropertyService {
 
-    private final PropertyRepo propertyRepo;
-    private final ModelMapper modelMapper;
-    private final UserRepo userRepo;
+    void turnPropertyContingent(Long propertyId);
+    void cancelPropertyContingency(Long propertyId);
+    List<Property> findAllByOwnerEmail(String email);
 
-    public void turnPropertyContingent(Long propertyId) {
-        Property property = propertyRepo.findById(propertyId).orElseThrow();
-        property.setStatus(PropertyStatus.STATUS_CONTINGENT);
-        propertyRepo.save(property);
-    }
+    void create(String email, PropertyRequestDto propertyRequestDto);
 
-    public void cancelPropertyContingency(Long propertyId) {
-        Property property = propertyRepo.findById(propertyId).orElseThrow();
-        property.setStatus(PropertyStatus.STATUS_AVAILABLE);
-        propertyRepo.save(property);
-    }
+    void update(String email, Long propertyId, PropertyRequestDto propertyRequestDto);
 
-    public List<Property> findAllByOwnerEmail(String email) {
-        return propertyRepo.findAllByOwnerEmail(email);
-    }
+    void delete(Long propertyId);
 
-    public void create(String email, PropertyRequestDto propertyRequestDto) {
-        User user = userRepo.findByEmail(email).orElseThrow();
-        if (!user.getStatus().equals(UserStatus.STATUS_APPROVED)) {
-            throw new RuntimeException("User is not approved");
-        }
+    List<Property> findAllProperties();
 
-        Property property = modelMapper.map(propertyRequestDto, Property.class);
-        property.setStatus(PropertyStatus.STATUS_AVAILABLE);
-        property.setOwner(user);
-        propertyRepo.save(property);
-    }
-
-    public void update(String email, Long propertyId, PropertyRequestDto propertyRequestDto) {
-        Property property = propertyRepo.findById(propertyId).orElseThrow();
-        modelMapper.map(propertyRequestDto, property);
-        propertyRepo.save(property);
-    }
-
-    public void delete(Long propertyId) {
-        Property property = propertyRepo.findById(propertyId).orElseThrow();
-        if (property.getStatus().equals(PropertyStatus.STATUS_PENDING)) {
-            throw new RuntimeException("Property cannot be deleted");
-        }
-
-        propertyRepo.deleteById(propertyId);
-    }
+    Optional<Property> findPropertyBySlug(String slug);
 }
