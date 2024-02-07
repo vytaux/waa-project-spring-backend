@@ -18,16 +18,15 @@ INSERT INTO users_roles (user_id, role_id) VALUES (93, 93);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
     VALUES (91, 'property-first', 'STATUS_AVAILABLE', 'Property 1', 'Description 1', 100000, 91);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (92, 'propetyu-2' , 'STATUS_AVAILABLE','Property 2', 'Description 2', 300000, 92);
+    VALUES (92, 'propetyu-2' , 'STATUS_PENDING','Property 2', 'Description 2', 300000, 92);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (93, 'property-thre', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 92);
+    VALUES (93, 'property-thre', 'STATUS_CONTINGENT', 'Property 3', 'Description 3', 250000, 92);
 
 -- Offer
 
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
-    VALUES(1, 'Hey this is my offer', 5000000.00, 91, 'OFFER_AVAILABLE', 91 );
+    VALUES(1, 'Hey this is my offer', 5000000.00, 91, 'STATUS_NEW', 91 );
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
-VALUES(2, 'Hey this is Last offer', 58373000.00, 92, 'OFFER_PENDING', 92 );
+    VALUES(2, 'Hey this is Last offer', 58373000.00, 92, 'STATUS_REJECTED', 92 );
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
-VALUES(3, 'Here is the offer', 746258984.00, 93, 'OFFER_CONTINGENT', 93);
-    VALUES (3, 'property-thre', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 2);
+    VALUES(3, 'Here is the offer', 746258984.00, 93, 'STATUS_ACCEPTED', 93);

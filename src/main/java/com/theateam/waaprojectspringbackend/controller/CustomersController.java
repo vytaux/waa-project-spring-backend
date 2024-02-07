@@ -2,11 +2,8 @@ package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.OfferStatus;
-import com.theateam.waaprojectspringbackend.entity.Offer;
-import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
-import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +24,17 @@ public class CustomersController {
 
     private final OfferService offerService;
     private final UserService userService;
-    private final UserRepo userRepo;
 
-    @GetMapping("/offers")
-    public List<Offer> offersHistory() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
-        return user.getOffers();
+//    @GetMapping("/offers")
+//    public List<Offer> offersHistory() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
+//        return user.getOffers();
+//    }
+
+    @GetMapping
+    public List<User> getAllUsers(){
+        return userService.getAllUser();
     }
 
     @GetMapping("{id}/offers/history")
