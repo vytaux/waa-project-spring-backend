@@ -1,6 +1,7 @@
 package com.theateam.waaprojectspringbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -36,5 +37,6 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
+    @JsonIgnore
     private List<Offer> offers = new ArrayList<>();
 }

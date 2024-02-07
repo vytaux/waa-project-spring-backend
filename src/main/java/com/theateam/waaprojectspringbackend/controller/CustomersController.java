@@ -1,10 +1,10 @@
 package com.theateam.waaprojectspringbackend.controller;
 
+import com.theateam.waaprojectspringbackend.entity.Offer;
+import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
-import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
-import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +19,6 @@ import java.util.List;
 public class CustomersController {
 
     private final OfferService offerService;
-    private final UserRepo userRepo;
-    private final UserService userService;
 
     @GetMapping("/offers")
     public List<OfferResponseDto> offersHistory() {
@@ -28,9 +26,17 @@ public class CustomersController {
         return offerService.getOffers(authentication.getName());
     }
 
-    @GetMapping("/offers/current")
-    public String offersCurrent() {
-        return "Greetings from Customers offers/current!";
+    @GetMapping("{id}/offers/history")
+    public List<Offer> getAllOffersHistory(@PathVariable Long id) {
+        return offerService.getAllOfferByCustomerId(id);
+    }
+
+    @GetMapping("{id}/offers")
+    public List<Offer> getOffersByStatusAndCustomer(
+            @PathVariable Long id,
+            @RequestParam("status") String status
+    ) {
+        return offerService.getOfferByStatusAndCustomer(id, OfferStatus.valueOf(status));
     }
 
     @PostMapping("/offers")

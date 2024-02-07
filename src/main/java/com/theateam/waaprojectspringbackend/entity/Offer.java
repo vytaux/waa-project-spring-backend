@@ -5,8 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -19,15 +17,17 @@ public class Offer {
     private String message;
     private BigDecimal price;
 
+
+    @JsonIgnore
+    @ManyToOne
+    private User customer;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private OfferStatus status;
 
     @JsonIgnore
     @ManyToOne
-    private User customer;
-
-    @JsonIgnore
-    @ManyToOne
     private Property property;
+
 }
