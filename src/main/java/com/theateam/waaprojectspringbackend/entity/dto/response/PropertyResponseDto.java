@@ -11,4 +11,5 @@ public class PropertyResponseDto {
     String description;
     String slug;
     BigDecimal price;
+    String status;
 }

@@ -1,12 +1,9 @@
 package com.theateam.waaprojectspringbackend.controller;
 
-import com.theateam.waaprojectspringbackend.entity.Offer;
-import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
-import com.theateam.waaprojectspringbackend.repository.OfferRepo;
+import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
-import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -23,12 +20,12 @@ public class CustomersController {
 
     private final OfferService offerService;
     private final UserRepo userRepo;
+    private final UserService userService;
 
     @GetMapping("/offers")
-    public List<Offer> offersHistory() {
+    public List<OfferResponseDto> offersHistory() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
-        return user.getOffers();
+        return offerService.getOffers(authentication.getName());
     }
 
     @GetMapping("/offers/current")
@@ -58,8 +55,9 @@ public class CustomersController {
     }
 
     @PutMapping("/offers/{offerId}/cancel")
-    public String cancelOffer() {
-        return "Greetings from Customers cancelOffer!";
+    public void cancelOffer(@PathVariable Long offerId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        offerService.cancelOffer(authentication.getName(), offerId);
     }
 
     @GetMapping("/offers/placed")
