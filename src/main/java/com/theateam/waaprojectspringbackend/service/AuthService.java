@@ -2,6 +2,7 @@ package com.theateam.waaprojectspringbackend.service;
 
 import com.theateam.waaprojectspringbackend.entity.Role;
 import com.theateam.waaprojectspringbackend.entity.User;
+import com.theateam.waaprojectspringbackend.entity.UserStatus;
 import com.theateam.waaprojectspringbackend.entity.dto.request.LoginRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.request.RefreshTokenRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.request.RegisterRequest;
@@ -37,6 +38,7 @@ public class AuthService {
         User user = new User();
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmail(registerRequest.getEmail());
+        user.setStatus(UserStatus.STATUS_WAITING_FOR_APPROVAL);
 
         if (userRepo.existsByEmail(registerRequest.getEmail())) {
             throw new EntityExistsException();
