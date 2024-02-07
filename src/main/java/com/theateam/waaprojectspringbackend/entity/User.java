@@ -1,5 +1,6 @@
 package com.theateam.waaprojectspringbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +16,8 @@ public class User {
     private long id;
 
     private String email;
+
+    @JsonIgnore
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")

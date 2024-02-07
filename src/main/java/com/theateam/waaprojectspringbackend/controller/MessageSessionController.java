@@ -2,7 +2,7 @@ package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.dto.request.MessageSessionRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageSessionResponse;
-import com.theateam.waaprojectspringbackend.service.impl.MessageSessionService;
+import com.theateam.waaprojectspringbackend.service.impl.MessageSessionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageSessionController {
 
-    private final MessageSessionService service;
+    private final MessageSessionServiceImpl service;
 
     @GetMapping
     public List<MessageSessionResponse> getAll() {

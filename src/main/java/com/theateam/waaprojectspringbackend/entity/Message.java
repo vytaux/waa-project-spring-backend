@@ -1,5 +1,6 @@
 package com.theateam.waaprojectspringbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -19,6 +20,10 @@ public class Message {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JsonIgnore
+    private MessageSession messageSession;
 
     @ManyToOne
     private User createdBy;

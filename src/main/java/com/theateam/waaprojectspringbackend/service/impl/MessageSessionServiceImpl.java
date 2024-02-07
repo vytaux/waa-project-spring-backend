@@ -5,25 +5,26 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.MessageSessionReq
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageSessionResponse;
 import com.theateam.waaprojectspringbackend.exception.ResourceNotFoundException;
 import com.theateam.waaprojectspringbackend.repository.MessageSessionRepo;
+import com.theateam.waaprojectspringbackend.service.MessageSessionService;
+import com.theateam.waaprojectspringbackend.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MessageSessionService {
+public class MessageSessionServiceImpl implements MessageSessionService {
 
     private final MessageSessionRepo repo;
     private final ModelMapper modelMapper;
+    private final AuthUtil authUtil;
 
 
     public List<MessageSessionResponse> getAll() {
-        return repo.findAll().stream()
-                .map(messageSession -> modelMapper.map(messageSession, MessageSessionResponse.class))
-                .collect(Collectors.toList());
+        List<MessageSession> messageSessions = repo.findAllByUserEmail(authUtil.getUserDetails().getUsername());
+        return MessageSessionResponse.fromEntityToDto(messageSessions);
     }
 
     public MessageSessionResponse save(MessageSessionRequest request) {

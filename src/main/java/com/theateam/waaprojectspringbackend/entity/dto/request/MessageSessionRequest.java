@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageSessionRequest {
-    private User userOne;
-    private User userTwo;
+    private int userOneId;
+    private int userTwoId;
     private List<Message> messages;
 }
