@@ -19,4 +19,5 @@ public interface OfferService {
     List<OfferResponseDto> getOffers(String name);
     void cancelOffer(String name, Long offerId);
     void updateOffer(String name, Long offerId, UpdateOfferDto updateOfferDto);
+    List<OfferResponseDto> getOffersByOwnerEmail(String name);
 }

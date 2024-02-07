@@ -24,8 +24,8 @@ INSERT INTO properties (id, slug, status, name, description, price, owner_id)
 
 -- Offer
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
-    VALUES(1, 'Hey this is my offer', 5000000.00, 91, 'STATUS_NEW', 91 );
+    VALUES(91, 'Hey this is my offer', 5000000.00, 91, 'STATUS_NEW', 91 );
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
-    VALUES(2, 'Hey this is Last offer', 58373000.00, 92, 'STATUS_NEW', 92 );
+    VALUES(92, 'Hey this is Last offer', 58373000.00, 92, 'STATUS_NEW', 92 );
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
-    VALUES(3, 'Here is the offer', 746258984.00, 93, 'STATUS_NEW', 93);
+    VALUES(93, 'Here is the offer', 746258984.00, 93, 'STATUS_NEW', 93);

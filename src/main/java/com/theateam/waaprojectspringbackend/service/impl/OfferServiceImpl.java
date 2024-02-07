@@ -4,7 +4,6 @@ import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.request.UpdateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
-import com.theateam.waaprojectspringbackend.exception.CustomException;
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
@@ -98,7 +97,15 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public List<Offer> getOfferByStatusAndCustomer(Long customerId, OfferStatus status) {
-        User user = userRepo.findById(customerId).orElseThrow(() -> new CustomException("User not found"));
+        User user = userRepo.findById(customerId).orElseThrow();
         return offerRepo.findAllByCustomerAndStatus(user, status);
+    }
+
+    @Override
+    public List<OfferResponseDto> getOffersByOwnerEmail(String name) {
+        List<Offer> ownerOffers = offerRepo.getOffersByOwnerEmail(name);
+        return ownerOffers.stream()
+                .map(offer -> modelMapper.map(offer, OfferResponseDto.class))
+                .toList();
     }
 }

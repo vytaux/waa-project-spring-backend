@@ -3,6 +3,7 @@ package com.theateam.waaprojectspringbackend.controller;
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.Property;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
+import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.impl.PropertyServiceImpl;
@@ -43,8 +44,6 @@ public class OwnersController {
 
     @PutMapping("/properties/{propertyId}/turnContingent")
     public void turnPropertyContingent(@PathVariable Long propertyId) {
-        // TODO if we already have 1 accepted, refuse
-        // TODO disable buttons in frontend if theres 1 offer accepted
         propertyService.turnPropertyContingent(propertyId);
     }
 
@@ -59,8 +58,10 @@ public class OwnersController {
     }
 
     @GetMapping("/offers")
-    public List<Offer> offers() {
-        return offerRepo.findAll();
+    public List<OfferResponseDto> offers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String ownerEmail = authentication.getName();
+        return offerService.getOffersByOwnerEmail(ownerEmail);
     }
 
     @PutMapping("/offers/{offerId}/accept")
