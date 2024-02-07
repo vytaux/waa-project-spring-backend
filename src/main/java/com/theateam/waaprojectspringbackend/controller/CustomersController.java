@@ -1,26 +1,48 @@
 package com.theateam.waaprojectspringbackend.controller;
 
-import org.springframework.security.access.annotation.Secured;
+import com.theateam.waaprojectspringbackend.entity.Offer;
+import com.theateam.waaprojectspringbackend.entity.OfferStatus;
+import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
+import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
+import com.theateam.waaprojectspringbackend.service.OfferService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/customers")
 @CrossOrigin
 public class CustomersController {
 
-    @GetMapping("/offers/history")
-    public String offersHistory() {
-        return "Greetings from Customers offers/history!";
+    private final OfferService offerService;
+
+    @GetMapping("/offers")
+    public List<OfferResponseDto> offersHistory() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return offerService.getOffers(authentication.getName());
     }
 
-    @GetMapping("/offers/current")
-    public String offersCurrent() {
-        return "Greetings from Customers offers/current!";
+    @GetMapping("{id}/offers/history")
+    public List<Offer> getAllOffersHistory(@PathVariable Long id) {
+        return offerService.getAllOfferByCustomerId(id);
+    }
+
+    @GetMapping("{id}/offers")
+    public List<Offer> getOffersByStatusAndCustomer(
+            @PathVariable Long id,
+            @RequestParam("status") String status
+    ) {
+        return offerService.getOfferByStatusAndCustomer(id, OfferStatus.valueOf(status));
     }
 
     @PostMapping("/offers")
-    public String offers() {
-        return "Greetings from Customers offers!";
+    public void createOffer(@RequestBody CreateOfferDto createOfferDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        offerService.createOffer(authentication.getName(), createOfferDto);
     }
 
     @GetMapping("/saved-properties")
@@ -39,17 +61,13 @@ public class CustomersController {
     }
 
     @PutMapping("/offers/{offerId}/cancel")
-    public String cancelOffer() {
-        return "Greetings from Customers cancelOffer!";
+    public void cancelOffer(@PathVariable Long offerId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        offerService.cancelOffer(authentication.getName(), offerId);
     }
 
     @GetMapping("/offers/placed")
     public String getPlacedOffers() {
         return "Greetings from Customers placedOffers!";
-    }
-
-    @GetMapping("/receipt/{offerId}")
-    public String downloadReceiptForOffer() {
-        return "Greetings from Customers downloadReceiptForOffer!";
     }
 }

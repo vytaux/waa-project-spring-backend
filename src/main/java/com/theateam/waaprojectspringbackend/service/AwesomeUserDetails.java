@@ -1,6 +1,5 @@
 package com.theateam.waaprojectspringbackend.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.theateam.waaprojectspringbackend.entity.Role;
 import com.theateam.waaprojectspringbackend.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,8 +14,7 @@ public class AwesomeUserDetails implements UserDetails {
 
     private final String email;
 
-    @JsonIgnore
-    private String password;
+    private final String password;
 
     private final List<Role> roles;
 
