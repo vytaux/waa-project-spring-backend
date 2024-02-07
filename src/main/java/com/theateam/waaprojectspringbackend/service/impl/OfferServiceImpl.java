@@ -2,6 +2,7 @@ package com.theateam.waaprojectspringbackend.service.impl;
 
 import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
+import com.theateam.waaprojectspringbackend.entity.dto.request.UpdateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
 import com.theateam.waaprojectspringbackend.exception.CustomException;
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
@@ -68,6 +69,19 @@ public class OfferServiceImpl implements OfferService {
         }
 
         offer.setStatus(OfferStatus.STATUS_CANCELLED);
+        offerRepo.save(offer);
+    }
+
+    public void updateOffer(String name, Long offerId, UpdateOfferDto updateOfferDto) {
+        Offer offer = offerRepo.findById(offerId).orElseThrow();
+        if (!offer.getCustomer().getEmail().equals(name)) {
+            throw new RuntimeException("Offer cannot be updated");
+        }
+        if (offer.getStatus().equals(OfferStatus.STATUS_ACCEPTED)) {
+            throw new RuntimeException("Offer cannot be updated");
+        }
+
+        modelMapper.map(updateOfferDto, offer);
         offerRepo.save(offer);
     }
 

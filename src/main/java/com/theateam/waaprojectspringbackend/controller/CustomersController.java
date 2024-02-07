@@ -3,6 +3,7 @@ package com.theateam.waaprojectspringbackend.controller;
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
+import com.theateam.waaprojectspringbackend.entity.dto.request.UpdateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,12 @@ public class CustomersController {
     public void createOffer(@RequestBody CreateOfferDto createOfferDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         offerService.createOffer(authentication.getName(), createOfferDto);
+    }
+
+    @PutMapping("/offers/{offerId}")
+    public void updateOffer(@PathVariable Long offerId, @RequestBody UpdateOfferDto updateOfferDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        offerService.updateOffer(authentication.getName(), offerId, updateOfferDto);
     }
 
     @GetMapping("/saved-properties")
