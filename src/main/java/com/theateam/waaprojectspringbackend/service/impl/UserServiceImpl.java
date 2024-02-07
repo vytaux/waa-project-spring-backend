@@ -4,8 +4,13 @@ import com.theateam.waaprojectspringbackend.entity.Message;
 import com.theateam.waaprojectspringbackend.entity.MessageSession;
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.UserStatus;
+import com.theateam.waaprojectspringbackend.entity.dto.request.MessageRequest;
+import com.theateam.waaprojectspringbackend.entity.dto.response.MessageResponse;
+import com.theateam.waaprojectspringbackend.repository.MessageRepo;
+import com.theateam.waaprojectspringbackend.repository.MessageSessionRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.UserService;
+import com.theateam.waaprojectspringbackend.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -16,12 +21,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepo userRepo;
+    private final UserRepo repo;
     private final MessageSessionRepo messageSessionRepo;
     private final MessageRepo messageRepo;
     private final AuthUtil authUtil;
@@ -29,24 +34,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUser() {
-       return userRepo.findAll();
+       return repo.findAll();
     }
 
     @Override
     public void approveUser(Long userId) {
-            User user = userRepo.findById(userId).orElseThrow();
+            User user = repo.findById(userId).orElseThrow();
             user.setStatus(UserStatus.STATUS_APPROVED);
-            userRepo.save(user);
+            repo.save(user);
     }
 
     public Optional<User> getUserByEmail(String userEmail){
-        return userRepo.findByEmail(userEmail);
+        return repo.findByEmail(userEmail);
     }
 
     public void saveUser(Optional<User> optionalUser){
         if(optionalUser.isPresent()){
             User user = optionalUser.get();
-            userRepo.save(user);
+            repo.save(user);
         }else{
             throw new IllegalArgumentException("Cannot Save empty Optional User");
         }

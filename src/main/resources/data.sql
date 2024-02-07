@@ -22,9 +22,9 @@ INSERT INTO users_roles (user_id, role_id) VALUES (95, 93);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
     VALUES (91, 'property-first', 'STATUS_AVAILABLE', 'Property 1', 'Description 1', 100000, 91);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (92, 'propetyu-2' , 'STATUS_AVAILABLE','Property 2', 'Description 2', 300000, 92);
+    VALUES (92, 'property-two' , 'STATUS_AVAILABLE','Property 2', 'Description 2', 300000, 92);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (93, 'property-thre', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 92);
+    VALUES (93, 'property-three', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 92);
 
 -- Offer
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
@@ -33,9 +33,6 @@ INSERT INTO offers (id, message, price, customer_id, status, property_id)
     VALUES(92, 'Hey this is Last offer', 58373000.00, 92, 'STATUS_NEW', 92 );
 INSERT INTO offers (id, message, price, customer_id, status, property_id)
     VALUES(93, 'Here is the offer', 746258984.00, 93, 'STATUS_NEW', 93);
-INSERT INTO properties (id, name, description, price, owner_id) VALUES (1, 'Property 1', 'Description 1', 100000, 2);
-INSERT INTO properties (id, name, description, price, owner_id) VALUES (2, 'Property 2', 'Description 2', 300000, 2);
-INSERT INTO properties (id, name, description, price, owner_id) VALUES (3, 'Property 3', 'Description 3', 250000, 2);
 
 INSERT INTO message_session(user_one_id, user_two_id) VALUES (92, 93);
 
