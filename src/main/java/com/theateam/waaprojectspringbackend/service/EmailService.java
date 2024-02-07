@@ -46,7 +46,10 @@ public class EmailService {
     }
 
     @Async
-    public void sendHtmlEmailWithAttachment(String subject, String body, List<String> recipients, Map<String, String> placeholders, MultipartFile attachment) throws MessagingException, IOException {
+    public void sendHtmlEmailWithAttachment(String subject,
+                                            String body,
+                                            List<String> recipients,
+                                            Map<String, String> placeholders, MultipartFile attachment) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
