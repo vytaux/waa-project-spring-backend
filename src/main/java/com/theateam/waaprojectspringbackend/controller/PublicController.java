@@ -3,7 +3,7 @@ package com.theateam.waaprojectspringbackend.controller;
 import com.theateam.waaprojectspringbackend.entity.Property;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsResponseDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
-import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
+import com.theateam.waaprojectspringbackend.service.PropertyService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class PublicController {
 
-    private final PropertyRepo propertyRepo;
+    private final PropertyService propertyService;
     private final ModelMapper modelMapper;
 
     @RequestMapping("/properties")
     public List<PropertyResponseDto> properties() {
-        List<Property> allProperties = propertyRepo.findAll();
+        List<Property> allProperties = propertyService.findAllProperties();
 
         return allProperties.stream()
                 .map(property -> modelMapper.map(property, PropertyResponseDto.class))
@@ -31,7 +31,7 @@ public class PublicController {
 
     @RequestMapping("/properties/{slug}")
     public PropertyDetailsResponseDto getPropertyDetails(@PathVariable String slug) {
-        Property property = propertyRepo.findBySlug(slug).orElseThrow();
+        Property property = propertyService.findPropertyBySlug(slug).orElseThrow();
         return modelMapper.map(property, PropertyDetailsResponseDto.class);
     }
 }

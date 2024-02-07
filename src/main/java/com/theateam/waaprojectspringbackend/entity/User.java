@@ -39,4 +39,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
     @JsonIgnore
     private List<Offer> offers = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> savedPropertyIds;
 }

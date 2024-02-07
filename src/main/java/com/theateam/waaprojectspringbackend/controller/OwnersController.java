@@ -5,7 +5,7 @@ import com.theateam.waaprojectspringbackend.entity.Property;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
-import com.theateam.waaprojectspringbackend.service.PropertyService;
+import com.theateam.waaprojectspringbackend.service.impl.PropertyServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +21,7 @@ public class OwnersController {
 
     private final OfferRepo offerRepo;
     private final OfferService offerService;
-    private final PropertyService propertyService;
+    private final PropertyServiceImpl propertyService;
 
     @PostMapping("/properties")
     public void createProperty(@RequestBody PropertyRequestDto propertyRequestDto) {
