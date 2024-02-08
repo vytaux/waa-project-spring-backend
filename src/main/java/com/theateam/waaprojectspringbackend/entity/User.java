@@ -39,7 +39,7 @@ public class User {
     @JsonIgnore
     private List<Offer> offers = new ArrayList<>();
 
-    @OneToMany
+    @ManyToMany
     @JsonIgnore
     private List<Property> savedProperties = new ArrayList<>();
 }
