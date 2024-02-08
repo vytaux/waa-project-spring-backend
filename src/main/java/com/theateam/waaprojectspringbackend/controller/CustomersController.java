@@ -65,6 +65,9 @@ public class CustomersController {
         userService.addToSavedPropertiesList(savePropertyRequestDto);
     }
 
+    // TODO feels weird to delete an item, but sending in a separate dto when PUTting... 🤔
+    // probably should send SavedPropertyRequestDto with propertyId because these are not
+    // "real" entities, but just a list of ids
     @DeleteMapping("/0/saved-properties/{itemId}")
     public void removePropertyFromSavedList(@PathVariable Long itemId) {
         userService.removePropertyFromSavedList(itemId);
