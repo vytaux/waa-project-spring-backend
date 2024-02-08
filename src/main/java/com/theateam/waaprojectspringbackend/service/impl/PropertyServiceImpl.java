@@ -59,7 +59,7 @@ public class PropertyServiceImpl implements PropertyService {
     public void delete(Long propertyId) {
         Property property = propertyRepo.findById(propertyId).orElseThrow();
         if (property.getStatus().equals(PropertyStatus.STATUS_PENDING)) {
-            throw new RuntimeException("Property cannot be deleted");
+            return;
         }
 
         propertyRepo.deleteById(propertyId);
