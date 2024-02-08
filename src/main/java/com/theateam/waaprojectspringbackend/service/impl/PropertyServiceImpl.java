@@ -2,16 +2,21 @@ package com.theateam.waaprojectspringbackend.service.impl;
 
 import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
+import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsResponseDto;
+import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +39,14 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepo.save(property);
     }
 
-    public List<Property> findAllByOwnerEmail(String email) {
-        return propertyRepo.findAllByOwnerEmail(email);
+    public List<Property> findAllByOwnerEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return propertyRepo.findAllByOwnerEmail(authentication.getName());
     }
 
-    public void create(String email, PropertyRequestDto propertyRequestDto) {
-        User user = userRepo.findByEmail(email).orElseThrow();
+    public void create(PropertyRequestDto propertyRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
         if (!user.getStatus().equals(UserStatus.STATUS_APPROVED)) {
             return;
         }
@@ -50,7 +57,9 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepo.save(property);
     }
 
-    public void update(String email, Long propertyId, PropertyRequestDto propertyRequestDto) {
+    public void update(Long propertyId, PropertyRequestDto propertyRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // todo prevent updating others property
         Property property = propertyRepo.findById(propertyId).orElseThrow();
         modelMapper.map(propertyRequestDto, property);
         propertyRepo.save(property);
@@ -66,12 +75,17 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<Property> findAllProperties() {
-        return propertyRepo.findAll();
+    public List<PropertyResponseDto> findAllProperties() {
+        List<Property> allProperties = propertyRepo.findAll();
+
+        return allProperties.stream()
+                .map(property -> modelMapper.map(property, PropertyResponseDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Property> findPropertyBySlug(String slug) {
-        return propertyRepo.findBySlug(slug);
+    public PropertyDetailsResponseDto getPropertyDetails(String slug) {
+        Property property = propertyRepo.findBySlug(slug).orElseThrow();
+        return modelMapper.map(property, PropertyDetailsResponseDto.class);
     }
 }

@@ -4,6 +4,7 @@ import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.MessageRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.request.SavePropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageResponse;
+import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
 import com.theateam.waaprojectspringbackend.repository.MessageRepo;
 import com.theateam.waaprojectspringbackend.repository.MessageSessionRepo;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
@@ -14,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -33,11 +37,6 @@ public class UserServiceImpl implements UserService {
     private final PropertyRepo propertyRepo;
 
     @Override
-    public List<User> getAllUser() {
-       return userRepo.findAll();
-    }
-
-    @Override
     public void approveUser(Long userId) {
             User user = userRepo.findById(userId).orElseThrow();
             user.setStatus(UserStatus.STATUS_APPROVED);
@@ -48,8 +47,18 @@ public class UserServiceImpl implements UserService {
         return userRepo.findByEmail(userEmail);
     }
 
-    public void addToSavedPropertiesList(String email, SavePropertyRequestDto savePropertyRequestDto) {
-        User user = userRepo.findByEmail(email).orElseThrow();
+    public List<PropertyResponseDto> getSavedProperties() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = getUserByEmail(authentication.getName()).orElseThrow();
+
+        return user.getSavedProperties().stream()
+                .map(property -> modelMapper.map(property, PropertyResponseDto.class))
+                .toList();
+    }
+
+    public void addToSavedPropertiesList(SavePropertyRequestDto savePropertyRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
 
         Property property = propertyRepo
                 .findById(savePropertyRequestDto.getPropertyId()).orElseThrow();
@@ -84,8 +93,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removePropertyFromSavedList(String email, Long itemId) {
-        User user = userRepo.findByEmail(email).orElseThrow();
+    public void removePropertyFromSavedList(Long itemId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
         Property property = propertyRepo.findById(itemId).orElseThrow();
         user.getSavedProperties().remove(property);
         userRepo.save(user);
@@ -99,4 +109,10 @@ public class UserServiceImpl implements UserService {
         return messageSession;
     }
 
+    public List<User> findPendingOwners() {
+        return userRepo.findByStatusAndRoleType(
+            UserStatus.STATUS_WAITING_FOR_APPROVAL,
+            RoleType.OWNER
+        );
+    }
 }

@@ -20,26 +20,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OwnersController {
 
-    private final OfferRepo offerRepo;
     private final OfferService offerService;
     private final PropertyServiceImpl propertyService;
 
     @PostMapping("/properties")
     public void createProperty(@RequestBody PropertyRequestDto propertyRequestDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        propertyService.create(authentication.getName(), propertyRequestDto);
+        propertyService.create(propertyRequestDto);
     }
 
     @PutMapping("/properties/{propertyId}")
     public void updateProperty(@PathVariable Long propertyId, @RequestBody PropertyRequestDto propertyRequestDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        propertyService.update(authentication.getName(), propertyId, propertyRequestDto);
+        propertyService.update(propertyId, propertyRequestDto);
     }
 
     @GetMapping("/properties")
     public List<Property> getAllProperties() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return propertyService.findAllByOwnerEmail(authentication.getName());
+        return propertyService.findAllByOwnerEmail();
     }
 
     @PutMapping("/properties/{propertyId}/turnContingent")
@@ -59,9 +55,7 @@ public class OwnersController {
 
     @GetMapping("/offers")
     public List<OfferResponseDto> offers() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String ownerEmail = authentication.getName();
-        return offerService.getOffersByOwnerEmail(ownerEmail);
+        return offerService.getOffersByOwnerEmail();
     }
 
     @PutMapping("/offers/{offerId}/accept")
@@ -72,10 +66,5 @@ public class OwnersController {
     @PutMapping("/offers/{offerId}/reject")
     public void rejectOffer(@PathVariable Long offerId) {
         offerService.rejectOffer(offerId);
-    }
-
-    @PutMapping("/messages")
-    public String messages() {
-        return "Greetings from Owners messages!";
     }
 }

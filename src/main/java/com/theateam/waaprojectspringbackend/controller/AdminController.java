@@ -18,15 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UserRepo userRepo;
     private final UserService userService;
 
     @GetMapping("/owners/pending")
     public List<User> adminOwnersPending() {
-        return userRepo.findByStatusAndRoleType(
-                UserStatus.STATUS_WAITING_FOR_APPROVAL,
-                RoleType.OWNER
-        );
+        return userService.findPendingOwners();
     }
 
     @PutMapping("/owners/{ownerId}/approve")

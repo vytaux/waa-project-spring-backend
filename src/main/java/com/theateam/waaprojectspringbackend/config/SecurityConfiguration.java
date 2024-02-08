@@ -41,10 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/admin/**").hasAuthority(RoleType.ADMIN.name())
                 .antMatchers("/api/v1/users/**").authenticated()
                 .antMatchers("/api/v1/message-sessions").authenticated()
-                // Necessary for H2 console access
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/sendMail").permitAll()
-                .antMatchers("/api/sendHtmlEmailWithAttachment").permitAll()
+                .antMatchers("/api/sendMail").authenticated()
                 .anyRequest().permitAll() // Allow access to all other URLs
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

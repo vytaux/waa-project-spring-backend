@@ -9,15 +9,13 @@ import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto
 import java.util.List;
 
 public interface OfferService {
-
     List<Offer> getAllOfferByCustomerId(Long userId);
     List<Offer> getOfferByStatusAndCustomer(Long customerId, OfferStatus status);
-
-    void createOffer(String username, CreateOfferDto createOfferDto);
+    List<OfferResponseDto> getOffersByOwnerEmail();
+    List<OfferResponseDto> getOffers();
+    void createOffer(CreateOfferDto createOfferDto);
     void acceptOffer(Long offerId);
     void rejectOffer(Long offerId);
-    List<OfferResponseDto> getOffers(String name);
-    void cancelOffer(String name, Long offerId);
-    void updateOffer(String name, Long offerId, UpdateOfferDto updateOfferDto);
-    List<OfferResponseDto> getOffersByOwnerEmail(String name);
+    void cancelOffer(Long offerId);
+    void updateOffer(Long offerId, UpdateOfferDto updateOfferDto);
 }

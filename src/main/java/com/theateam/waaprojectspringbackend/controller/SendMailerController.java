@@ -38,33 +38,4 @@ public class SendMailerController {
             return ResponseEntity.badRequest().body("Subject and body are required");
         }
     }
-
-    @PostMapping("/sendHtmlEmailWithAttachment")
-    public ResponseEntity<String> sendHtmlEmail(
-            @ModelAttribute EmailRequest emailRequest,
-            @RequestPart(value = "attachment", required = false) MultipartFile attachment
-    ) {
-        String subject = emailRequest.getSubject();
-        String body = emailRequest.getBody();
-        List<String> recipients = emailRequest.getRecipients();
-        Map<String, String> placeholders = emailRequest.getPlaceholders();
-
-        if (subject != null && body != null) {
-            if (recipients != null && !recipients.isEmpty()) {
-                try {
-                    emailService.sendHtmlEmailWithAttachment(subject, body, recipients, placeholders, attachment);
-                    return ResponseEntity.ok("Email sent successfully");
-                } catch (MessagingException | IOException e) {
-                    // log.error("Failed to send email ", e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body("Failed to send Email. Try Again or Please contact the server for details.");
-                }
-            } else {
-                return ResponseEntity.badRequest().body("No recipients provided");
-            }
-        } else {
-            return ResponseEntity.badRequest().body("Subject and body are required");
-        }
-    }
-
 }

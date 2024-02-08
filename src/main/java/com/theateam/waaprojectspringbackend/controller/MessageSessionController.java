@@ -40,5 +40,4 @@ public class MessageSessionController {
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
-
 }

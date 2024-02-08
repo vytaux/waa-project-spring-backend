@@ -18,20 +18,14 @@ import java.util.stream.Collectors;
 public class PublicController {
 
     private final PropertyService propertyService;
-    private final ModelMapper modelMapper;
 
     @RequestMapping("/properties")
-    public List<PropertyResponseDto> properties() {
-        List<Property> allProperties = propertyService.findAllProperties();
-
-        return allProperties.stream()
-                .map(property -> modelMapper.map(property, PropertyResponseDto.class))
-                .collect(Collectors.toList());
+    public List<PropertyResponseDto> findAllProperties() {
+        return propertyService.findAllProperties();
     }
 
     @RequestMapping("/properties/{slug}")
     public PropertyDetailsResponseDto getPropertyDetails(@PathVariable String slug) {
-        Property property = propertyService.findPropertyBySlug(slug).orElseThrow();
-        return modelMapper.map(property, PropertyDetailsResponseDto.class);
+        return propertyService.getPropertyDetails(slug);
     }
 }

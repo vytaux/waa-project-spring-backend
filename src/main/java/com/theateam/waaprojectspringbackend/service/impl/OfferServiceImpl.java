@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,8 +32,9 @@ public class OfferServiceImpl implements OfferService {
     private final PropertyRepo propertyRepo;
     private final EmailService emailService;
 
-    public void createOffer(String username, CreateOfferDto createOfferDto) {
-        User user = userRepo.findByEmail(username).orElseThrow();
+    public void createOffer(CreateOfferDto createOfferDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
 
         List<PropertyStatus> statuses = List.of(PropertyStatus.STATUS_AVAILABLE, PropertyStatus.STATUS_PENDING);
         Property property = propertyRepo
@@ -97,9 +100,10 @@ public class OfferServiceImpl implements OfferService {
         offerRepo.save(offer);
     }
 
-    public void cancelOffer(String name, Long offerId) {
+    public void cancelOffer(Long offerId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Offer offer = offerRepo.findById(offerId).orElseThrow();
-        if (!offer.getCustomer().getEmail().equals(name)) {
+        if (!offer.getCustomer().getEmail().equals(authentication.getName())) {
             return;
         }
         // Cannot modify offer after ‘contingency’
@@ -111,10 +115,11 @@ public class OfferServiceImpl implements OfferService {
         offerRepo.save(offer);
     }
 
-    public void updateOffer(String name, Long offerId, UpdateOfferDto updateOfferDto) {
+    public void updateOffer(Long offerId, UpdateOfferDto updateOfferDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Offer offer = offerRepo.findById(offerId).orElseThrow();
         //  Don't allow to update if it's not auth user
-        if (!offer.getCustomer().getEmail().equals(name)) {
+        if (!offer.getCustomer().getEmail().equals(authentication.getName())) {
             return;
         }
         // Don't allow to update if it's already accepted
@@ -130,8 +135,9 @@ public class OfferServiceImpl implements OfferService {
         offerRepo.save(offer);
     }
 
-    public List<OfferResponseDto> getOffers(String name) {
-        User user = userRepo.findByEmail(name).orElseThrow();
+    public List<OfferResponseDto> getOffers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
         return user.getOffers().stream()
                 .map(offer -> modelMapper.map(offer, OfferResponseDto.class))
                 .toList();
@@ -148,8 +154,9 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<OfferResponseDto> getOffersByOwnerEmail(String name) {
-        List<Offer> ownerOffers = offerRepo.getOffersByOwnerEmail(name);
+    public List<OfferResponseDto> getOffersByOwnerEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Offer> ownerOffers = offerRepo.getOffersByOwnerEmail(authentication.getName());
         return ownerOffers.stream()
                 .map(offer -> modelMapper.map(offer, OfferResponseDto.class))
                 .toList();
