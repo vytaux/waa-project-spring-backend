@@ -29,7 +29,7 @@ public class SendMailerController {
 
         if (subject != null && body != null) {
             if (recipients != null && !recipients.isEmpty()) {
-                emailService.sendEmail(subject, body, recipients);
+                emailService.sendEmail(recipients, subject, body);
                 return ResponseEntity.ok("Emails sent successfully to multiple recipients");
             } else {
                 return ResponseEntity.badRequest().body("No recipients provided");

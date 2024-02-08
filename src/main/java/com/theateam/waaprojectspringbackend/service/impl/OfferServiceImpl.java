@@ -7,6 +7,7 @@ import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto
 import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
+import com.theateam.waaprojectspringbackend.service.EmailService;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class OfferServiceImpl implements OfferService {
     private final UserRepo userRepo;
     private final ModelMapper modelMapper;
     private final PropertyRepo propertyRepo;
+    private final EmailService emailService;
 
     public void createOffer(String username, CreateOfferDto createOfferDto) {
         User user = userRepo.findByEmail(username).orElseThrow();
@@ -39,6 +41,17 @@ public class OfferServiceImpl implements OfferService {
         offer.setStatus(OfferStatus.STATUS_NEW);
 
         offerRepo.save(offer);
+
+        // send email to owner
+        emailService.sendEmail(
+            property.getOwner().getEmail(),
+            "You just received a new offer for your property \"" + property.getName() + "\"!",
+            "You have a new offer for your property \""
+                    + property.getName()
+                    + "\" for $"
+                    + offer.getPrice()
+                    + ". Please check your account for more details."
+        );
     }
 
     public void acceptOffer(Long offerId) {
@@ -49,6 +62,17 @@ public class OfferServiceImpl implements OfferService {
         Property property = propertyRepo.findById(offer.getProperty().getId()).orElseThrow();
         property.setStatus(PropertyStatus.STATUS_PENDING);
         propertyRepo.save(property);
+
+        // send email to customer
+        emailService.sendEmail(
+            offer.getCustomer().getEmail(),
+            "Your offer for property \"" + property.getName() + "\" has been accepted!",
+            "Your offer for property \""
+                    + property.getName()
+                    + "\" for $"
+                    + offer.getPrice()
+                    + " has been accepted. Please check your account for more details."
+        );
     }
 
     public void rejectOffer(Long offerId) {

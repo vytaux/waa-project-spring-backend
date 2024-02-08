@@ -30,6 +30,6 @@ spring:
           starttls:
             enable: true
   email:
-    sender: sender@example.com
+    sender: notifications@nexthome.com
 server:
   port: 8080
