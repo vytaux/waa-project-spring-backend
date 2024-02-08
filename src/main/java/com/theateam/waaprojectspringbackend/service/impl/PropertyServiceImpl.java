@@ -41,7 +41,7 @@ public class PropertyServiceImpl implements PropertyService {
     public void create(String email, PropertyRequestDto propertyRequestDto) {
         User user = userRepo.findByEmail(email).orElseThrow();
         if (!user.getStatus().equals(UserStatus.STATUS_APPROVED)) {
-            throw new RuntimeException("User is not approved");
+            return;
         }
 
         Property property = modelMapper.map(propertyRequestDto, Property.class);

@@ -100,11 +100,11 @@ public class OfferServiceImpl implements OfferService {
     public void cancelOffer(String name, Long offerId) {
         Offer offer = offerRepo.findById(offerId).orElseThrow();
         if (!offer.getCustomer().getEmail().equals(name)) {
-            throw new RuntimeException("Offer cannot be cancelled");
+            return;
         }
         // Cannot cancel offer after ‘contingency’
         if (offer.getProperty().getStatus().equals(PropertyStatus.STATUS_CONTINGENT)) {
-            throw new RuntimeException("Offer cannot be cancelled");
+            return;
         }
 
         offer.setStatus(OfferStatus.STATUS_CANCELLED);
@@ -114,10 +114,10 @@ public class OfferServiceImpl implements OfferService {
     public void updateOffer(String name, Long offerId, UpdateOfferDto updateOfferDto) {
         Offer offer = offerRepo.findById(offerId).orElseThrow();
         if (!offer.getCustomer().getEmail().equals(name)) {
-            throw new RuntimeException("Offer cannot be updated");
+            return;
         }
         if (offer.getStatus().equals(OfferStatus.STATUS_ACCEPTED)) {
-            throw new RuntimeException("Offer cannot be updated");
+            return;
         }
 
         modelMapper.map(updateOfferDto, offer);
