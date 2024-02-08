@@ -18,6 +18,18 @@ spring:
   sql:
     init:
       mode: always
-
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 6f8d6b84a07054
+    password: 12f15b319102c2
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  email:
+    sender: sender@example.com
 server:
   port: 8080
