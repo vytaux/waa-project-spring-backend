@@ -12,9 +12,12 @@ import com.theateam.waaprojectspringbackend.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,8 @@ public class OfferServiceImpl implements OfferService {
                 .orElseThrow();
 
         Offer offer = modelMapper.map(createOfferDto, Offer.class);
+        // for some reason maps propertyId -> id???????????
+        offer.setId(null);
         offer.setProperty(property);
         offer.setCustomer(user);
         offer.setStatus(OfferStatus.STATUS_NEW);
@@ -56,14 +61,25 @@ public class OfferServiceImpl implements OfferService {
 
     public void acceptOffer(Long offerId) {
         Offer offer = offerRepo.findById(offerId).orElseThrow();
+        // Does this property already have an accepted offer?
+        Property property = offer.getProperty();
+        // Ideal way is probably add acceptedOffer to property
+        // and property.getAcceptedOffer() != null
+        Optional<Offer> acceptedOffer = property.getOffers().stream()
+                .filter(o -> o.getStatus().equals(OfferStatus.STATUS_ACCEPTED))
+                .findFirst();
+        if (acceptedOffer.isPresent()) {
+            return;
+        }
+
+        // All good
         offer.setStatus(OfferStatus.STATUS_ACCEPTED);
         offerRepo.save(offer);
         // Now turn property pending
-        Property property = propertyRepo.findById(offer.getProperty().getId()).orElseThrow();
         property.setStatus(PropertyStatus.STATUS_PENDING);
         propertyRepo.save(property);
 
-        // send email to customer
+        // Send email to customer
         emailService.sendEmail(
             offer.getCustomer().getEmail(),
             "Your offer for property \"" + property.getName() + "\" has been accepted!",

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String message;
     private BigDecimal price;

@@ -66,8 +66,6 @@ public class OwnersController {
 
     @PutMapping("/offers/{offerId}/accept")
     public void acceptOffer(@PathVariable Long offerId) {
-        // TODO if we already have 1 accepted, refuse
-        // TODO disable buttons in frontend if theres 1 offer accepted
         offerService.acceptOffer(offerId);
     }
 
