@@ -102,7 +102,7 @@ public class OfferServiceImpl implements OfferService {
         if (!offer.getCustomer().getEmail().equals(name)) {
             return;
         }
-        // Cannot cancel offer after ‘contingency’
+        // Cannot modify offer after ‘contingency’
         if (offer.getProperty().getStatus().equals(PropertyStatus.STATUS_CONTINGENT)) {
             return;
         }
@@ -113,10 +113,16 @@ public class OfferServiceImpl implements OfferService {
 
     public void updateOffer(String name, Long offerId, UpdateOfferDto updateOfferDto) {
         Offer offer = offerRepo.findById(offerId).orElseThrow();
+        //  Don't allow to update if it's not auth user
         if (!offer.getCustomer().getEmail().equals(name)) {
             return;
         }
+        // Don't allow to update if it's already accepted
         if (offer.getStatus().equals(OfferStatus.STATUS_ACCEPTED)) {
+            return;
+        }
+        // Cannot modify offer after ‘contingency’
+        if (offer.getProperty().getStatus().equals(PropertyStatus.STATUS_CONTINGENT)) {
             return;
         }
 
