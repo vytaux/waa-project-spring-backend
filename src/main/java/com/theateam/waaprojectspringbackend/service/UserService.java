@@ -2,6 +2,7 @@ package com.theateam.waaprojectspringbackend.service;
 
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.MessageRequest;
+import com.theateam.waaprojectspringbackend.entity.dto.request.SavePropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageResponse;
 
 import java.util.List;
@@ -12,11 +13,13 @@ public interface UserService {
 
     void approveUser(Long userId);
 
-    void saveUser(Optional<User> user);
+    void addToSavedPropertiesList(String email, SavePropertyRequestDto savePropertyRequestDto);
 
     Optional<User> getUserByEmail(String userEmail);
 
     List<MessageResponse> getAllMessages(long id);
 
     MessageResponse saveMessage(long id, MessageRequest request);
+
+    void removePropertyFromSavedList(String email, Long propertyId);
 }

@@ -4,20 +4,20 @@ import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.OfferStatus;
 import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
+import com.theateam.waaprojectspringbackend.entity.dto.request.SavePropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.request.UpdateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
+import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,6 +27,7 @@ public class CustomersController {
 
     private final OfferService offerService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/offers")
     public List<OfferResponseDto> offersHistory() {
@@ -59,45 +60,27 @@ public class CustomersController {
         offerService.updateOffer(authentication.getName(), offerId, updateOfferDto);
     }
 
-    @GetMapping("/saved-properties")
-    public ResponseEntity<List<String>> getSavedProperties() {
+    @GetMapping("/0/saved-properties")
+    public List<PropertyResponseDto> getSavedProperties() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        Optional<User> user = userService.getUserByEmail(userEmail);
+        User user = userService.getUserByEmail(authentication.getName()).orElseThrow();
 
-        if(user!=null){
-            List<String> savedPropertyIds = user.get().getSavedPropertyIds();
-            return ResponseEntity.ok(savedPropertyIds);
-        }else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return user.getSavedProperties().stream()
+                .map(property -> modelMapper.map(property, PropertyResponseDto.class))
+                .toList();
     }
 
-    @PostMapping("/saved-properties/{propertyId}")
-    public ResponseEntity<String> savedProperties(@PathVariable String propertyId) {
+    @PutMapping("/0/saved-properties")
+    public void addToSavedPropertiesList(@RequestBody SavePropertyRequestDto savePropertyRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        Optional<User> user = userService.getUserByEmail(userEmail);
-
-        if(user.isPresent()){
-            List<String> savedPropertyIds = user.get().getSavedPropertyIds();
-            if(savedPropertyIds==null){
-                savedPropertyIds = new ArrayList<>();
-            }
-            if(!savedPropertyIds.contains(propertyId)){
-                savedPropertyIds.add(propertyId);
-                user.get().setSavedPropertyIds(savedPropertyIds);
-                userService.saveUser(user);
-                return ResponseEntity.ok("Property Id saved successfully");
-            }else {
-                return ResponseEntity.badRequest().body("Property Id already exist.");
-            }
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found.");
-        }
+        userService.addToSavedPropertiesList(authentication.getName(), savePropertyRequestDto);
     }
 
+    @DeleteMapping("/0/saved-properties/{itemId}")
+    public void removePropertyFromSavedList(@PathVariable Long itemId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userService.removePropertyFromSavedList(authentication.getName(), itemId);
+    }
 
     @PostMapping("/messages/{propertyId}")
     public String messages() {

@@ -1,13 +1,12 @@
 package com.theateam.waaprojectspringbackend.service.impl;
 
-import com.theateam.waaprojectspringbackend.entity.Message;
-import com.theateam.waaprojectspringbackend.entity.MessageSession;
-import com.theateam.waaprojectspringbackend.entity.User;
-import com.theateam.waaprojectspringbackend.entity.UserStatus;
+import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.MessageRequest;
+import com.theateam.waaprojectspringbackend.entity.dto.request.SavePropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageResponse;
 import com.theateam.waaprojectspringbackend.repository.MessageRepo;
 import com.theateam.waaprojectspringbackend.repository.MessageSessionRepo;
+import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import com.theateam.waaprojectspringbackend.util.AuthUtil;
@@ -26,41 +25,47 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepo repo;
+    private final UserRepo userRepo;
     private final MessageSessionRepo messageSessionRepo;
     private final MessageRepo messageRepo;
     private final AuthUtil authUtil;
     private final ModelMapper modelMapper;
+    private final PropertyRepo propertyRepo;
 
     @Override
     public List<User> getAllUser() {
-       return repo.findAll();
+       return userRepo.findAll();
     }
 
     @Override
     public void approveUser(Long userId) {
-            User user = repo.findById(userId).orElseThrow();
+            User user = userRepo.findById(userId).orElseThrow();
             user.setStatus(UserStatus.STATUS_APPROVED);
-            repo.save(user);
+            userRepo.save(user);
     }
 
     public Optional<User> getUserByEmail(String userEmail){
-        return repo.findByEmail(userEmail);
+        return userRepo.findByEmail(userEmail);
     }
 
-    public void saveUser(Optional<User> optionalUser){
-        if(optionalUser.isPresent()){
-            User user = optionalUser.get();
-            repo.save(user);
-        }else{
-            throw new IllegalArgumentException("Cannot Save empty Optional User");
+    public void addToSavedPropertiesList(String email, SavePropertyRequestDto savePropertyRequestDto) {
+        User user = userRepo.findByEmail(email).orElseThrow();
+
+        Property property = propertyRepo
+                .findById(savePropertyRequestDto.getPropertyId()).orElseThrow();
+
+        if (user.getSavedProperties().contains(property)) {
+            return;
         }
+
+        user.getSavedProperties().add(property);
+        userRepo.save(user);
     }
 
     @Override
     public List<MessageResponse> getAllMessages(long id) {
         User authenticatedUser = authUtil.getUser();
-        User secondUser = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found"));
+        User secondUser = userRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found"));
         MessageSession messageSession = findMessageSessionOrCreate(authenticatedUser, secondUser);
         return MessageResponse.fromEntityToDto(messageSession.getMessages());
     }
@@ -68,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public MessageResponse saveMessage(long id, MessageRequest request) {
         User authenticatedUser = authUtil.getUser();
-        User secondUser = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found"));
+        User secondUser = userRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found"));
         MessageSession messageSession = findMessageSessionOrCreate(authenticatedUser, secondUser);
 
         Message message = modelMapper.map(request, Message.class);
@@ -76,6 +81,14 @@ public class UserServiceImpl implements UserService {
         message.setCreatedBy(authUtil.getUser());
 
         return MessageResponse.fromEntityToDto(messageRepo.save(message));
+    }
+
+    @Override
+    public void removePropertyFromSavedList(String email, Long itemId) {
+        User user = userRepo.findByEmail(email).orElseThrow();
+        Property property = propertyRepo.findById(itemId).orElseThrow();
+        user.getSavedProperties().remove(property);
+        userRepo.save(user);
     }
 
     private MessageSession findMessageSessionOrCreate(User authenticatedUser, User secondUser) {
