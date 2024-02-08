@@ -7,7 +7,6 @@ import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.usertype.UserType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -19,8 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     @GetMapping("/owners/pending")
     public List<User> adminOwnersPending() {

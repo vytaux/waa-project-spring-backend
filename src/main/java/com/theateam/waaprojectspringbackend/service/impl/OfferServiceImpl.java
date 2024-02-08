@@ -12,7 +12,6 @@ import com.theateam.waaprojectspringbackend.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,16 +26,11 @@ import java.util.Optional;
 @Slf4j
 public class OfferServiceImpl implements OfferService {
 
-    @Autowired
-    OfferRepo offerRepo;
-    @Autowired
-    UserRepo userRepo;
-    @Autowired
-    ModelMapper modelMapper;
-    @Autowired
-    PropertyRepo propertyRepo;
-    @Autowired
-    EmailService emailService;
+    private final OfferRepo offerRepo;
+    private final UserRepo userRepo;
+    private final ModelMapper modelMapper;
+    private final PropertyRepo propertyRepo;
+    private final EmailService emailService;
 
     public void createOffer(CreateOfferDto createOfferDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

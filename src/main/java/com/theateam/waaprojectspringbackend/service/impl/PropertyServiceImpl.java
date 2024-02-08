@@ -10,7 +10,6 @@ import com.theateam.waaprojectspringbackend.service.PropertyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,12 +23,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PropertyServiceImpl implements PropertyService {
 
-    @Autowired
-    PropertyRepo propertyRepo;
-    @Autowired
-    ModelMapper modelMapper;
-    @Autowired
-    UserRepo userRepo;
+    private final PropertyRepo propertyRepo;
+    private final ModelMapper modelMapper;
+    private final UserRepo userRepo;
 
     public void turnPropertyContingent(Long propertyId) {
         Property property = propertyRepo.findById(propertyId).orElseThrow();
