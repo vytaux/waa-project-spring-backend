@@ -12,6 +12,7 @@ import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,14 +35,16 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepo roleRepo;
 
-    public void register(RegisterRequest registerRequest) {
+    public ResponseEntity<String> register(RegisterRequest registerRequest) {
         User user = new User();
+        var userEmail = registerRequest.getEmail();
+
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setEmail(registerRequest.getEmail());
+        user.setEmail(userEmail);
         user.setStatus(UserStatus.STATUS_WAITING_FOR_APPROVAL);
 
-        if (userRepo.existsByEmail(registerRequest.getEmail())) {
-            throw new EntityExistsException();
+        if (userRepo.existsByEmail(userEmail)) {
+            return ResponseEntity.badRequest().body(String.format("User %s already exists",userEmail));
         }
 
         // TODO don't allow save ROLE_ADMIN!!!
@@ -49,6 +52,8 @@ public class AuthService {
         user.getRoles().add(role);
 
         userRepo.save(user);
+
+        return ResponseEntity.ok("User Save");
     }
 
     public LoginResponse login(LoginRequest loginRequest) {

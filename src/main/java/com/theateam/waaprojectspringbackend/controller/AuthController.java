@@ -17,9 +17,10 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @ExceptionHandler
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest registerRequest) {
-        authService.register(registerRequest);
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+           return authService.register(registerRequest);
     }
 
     @PostMapping("/login")
