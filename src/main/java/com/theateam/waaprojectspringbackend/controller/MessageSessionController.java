@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/message-sessions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class MessageSessionController {
 
     private final MessageSessionServiceImpl service;

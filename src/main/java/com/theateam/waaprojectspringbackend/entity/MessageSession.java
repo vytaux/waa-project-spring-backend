@@ -29,7 +29,7 @@ public class MessageSession {
 
     @OneToMany
     @JoinColumn(name = "message_session_id")
-    @OrderBy("createdAt DESC")
+    @OrderBy("createdAt ASC")
     private List<Message> messages = new ArrayList<>();
 
     @UpdateTimestamp
