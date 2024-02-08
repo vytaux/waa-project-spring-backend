@@ -4,6 +4,7 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.MessageRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageResponse;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("{id}/messages")
     public List<MessageResponse> getAllMessages(@PathVariable long id) {

@@ -4,6 +4,7 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.MessageSessionReq
 import com.theateam.waaprojectspringbackend.entity.dto.response.MessageSessionResponse;
 import com.theateam.waaprojectspringbackend.service.impl.MessageSessionServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 @CrossOrigin
 public class MessageSessionController {
 
-    private final MessageSessionServiceImpl service;
+    @Autowired
+    MessageSessionServiceImpl service;
 
     @GetMapping
     public List<MessageSessionResponse> getAll() {

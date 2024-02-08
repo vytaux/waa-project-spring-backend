@@ -9,6 +9,7 @@ import com.theateam.waaprojectspringbackend.service.MessageSessionService;
 import com.theateam.waaprojectspringbackend.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageSessionServiceImpl implements MessageSessionService {
 
-    private final MessageSessionRepo repo;
-    private final ModelMapper modelMapper;
-    private final AuthUtil authUtil;
+    @Autowired
+    MessageSessionRepo repo;
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Autowired
+    AuthUtil authUtil;
 
 
     public List<MessageSessionResponse> getAll() {

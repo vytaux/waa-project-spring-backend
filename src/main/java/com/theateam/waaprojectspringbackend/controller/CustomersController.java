@@ -12,6 +12,7 @@ import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,11 @@ import java.util.List;
 @CrossOrigin
 public class CustomersController {
 
-    private final OfferService offerService;
-    private final UserService userService;
+    @Autowired
+    OfferService offerService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/offers")
     public List<OfferResponseDto> offersHistory() {

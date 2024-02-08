@@ -6,6 +6,7 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.RegisterRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.response.LoginResponse;
 import com.theateam.waaprojectspringbackend.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class AuthController {
 
-    private final AuthService authService;
+    @Autowired
+    AuthService authService;
 
     @PostMapping("/register")
     public void register(@RequestBody RegisterRequest registerRequest) {

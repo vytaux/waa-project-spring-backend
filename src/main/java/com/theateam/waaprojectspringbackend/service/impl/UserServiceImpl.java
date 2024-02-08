@@ -14,6 +14,7 @@ import com.theateam.waaprojectspringbackend.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,12 +30,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepo userRepo;
-    private final MessageSessionRepo messageSessionRepo;
-    private final MessageRepo messageRepo;
-    private final AuthUtil authUtil;
-    private final ModelMapper modelMapper;
-    private final PropertyRepo propertyRepo;
+    @Autowired
+    UserRepo userRepo;
+    @Autowired
+    MessageSessionRepo messageSessionRepo;
+    @Autowired
+    MessageRepo messageRepo;
+    @Autowired
+    AuthUtil authUtil;
+    @Autowired
+    ModelMapper modelMapper;
+    @Autowired
+    PropertyRepo propertyRepo;
 
     @Override
     public void approveUser(Long userId) {
