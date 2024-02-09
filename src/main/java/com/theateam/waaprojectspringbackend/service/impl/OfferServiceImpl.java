@@ -161,4 +161,17 @@ public class OfferServiceImpl implements OfferService {
                 .map(offer -> modelMapper.map(offer, OfferResponseDto.class))
                 .toList();
     }
+
+    public void turnPropertyContingentForCustomer(Long offerId){
+        Offer offer = offerRepo.findById(offerId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer with " + offerId + " Not Found"));
+        if(offer.getStatus()!=OfferStatus.STATUS_ACCEPTED){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"OfferStatus is not Accepted");
+        }
+        Property property = offer.getProperty();
+        if(property.getStatus()==PropertyStatus.STATUS_CONTINGENT){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Property status is already CONTINGENT");
+        }
+        property.setStatus(PropertyStatus.STATUS_CONTINGENT);
+        propertyRepo.save(property);
+    }
 }
