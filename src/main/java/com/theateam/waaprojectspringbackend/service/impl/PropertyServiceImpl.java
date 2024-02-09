@@ -2,6 +2,7 @@ package com.theateam.waaprojectspringbackend.service.impl;
 
 import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
+import com.theateam.waaprojectspringbackend.exception.ResourceNotFoundException;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
@@ -73,5 +74,11 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Optional<Property> findPropertyBySlug(String slug) {
         return propertyRepo.findBySlug(slug);
+    }
+
+    public User getUserByPropertySlug(String propertySlug) {
+        return propertyRepo.findBySlug(propertySlug)
+                .orElseThrow(() -> new ResourceNotFoundException("Property"))
+                .getOwner();
     }
 }

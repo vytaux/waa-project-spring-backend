@@ -1,6 +1,7 @@
 package com.theateam.waaprojectspringbackend.service;
 
 import com.theateam.waaprojectspringbackend.entity.Property;
+import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface PropertyService {
     List<Property> findAllProperties();
 
     Optional<Property> findPropertyBySlug(String slug);
+
+    User getUserByPropertySlug(String propertySlug);
 }
