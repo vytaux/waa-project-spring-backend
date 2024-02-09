@@ -19,8 +19,13 @@ public class PublicController {
     private final PropertyService propertyService;
 
     @RequestMapping("/properties")
-    public List<PropertyResponseDto> findAllProperties() {
-        return propertyService.findAllProperties();
+    public List<PropertyResponseDto> findAllProperties(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice
+    ) {
+        return propertyService.findAllProperties(name,description,minPrice,maxPrice);
     }
 
     @RequestMapping("/properties/{slug}")
@@ -28,13 +33,13 @@ public class PublicController {
         return propertyService.getPropertyDetails(slug);
     }
 
-    @GetMapping("/properties/search")
-    public List<Property> searchProperties(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice
-    ){
-        return propertyService.searchProperties(name,description,minPrice,maxPrice);
-    }
+//    @GetMapping("/properties/search")
+//    public List<Property> searchProperties(
+//            @RequestParam(required = false) String name,
+//            @RequestParam(required = false) String description,
+//            @RequestParam(required = false) BigDecimal minPrice,
+//            @RequestParam(required = false) BigDecimal maxPrice
+//    ){
+//        return propertyService.searchProperties(name,description,minPrice,maxPrice);
+//    }
 }

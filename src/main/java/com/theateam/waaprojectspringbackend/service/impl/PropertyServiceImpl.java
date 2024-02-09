@@ -88,19 +88,21 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepo.deleteById(propertyId);
     }
 
-    public List<Property> searchProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice) {
+    public List<PropertyResponseDto> findAllProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice) {
         Specification<Property> spec = PropertySpecifications.searchProperties(name, description, minPrice, maxPrice);
-        return propertyRepo.findAll(spec);
-    }
-
-    @Override
-    public List<PropertyResponseDto> findAllProperties() {
-        List<Property> allProperties = propertyRepo.findAll();
-
-        return allProperties.stream()
+        return propertyRepo.findAll(spec).stream()
                 .map(property -> modelMapper.map(property, PropertyResponseDto.class))
                 .collect(Collectors.toList());
     }
+
+//    @Override
+//    public List<PropertyResponseDto> findAllProperties() {
+//        List<Property> allProperties = propertyRepo.findAll();
+//
+//        return allProperties.stream()
+//                .map(property -> modelMapper.map(property, PropertyResponseDto.class))
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public PropertyDetailsResponseDto getPropertyDetails(String slug) {

@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface PropertyService {
     List<Property> findAllByOwnerEmail();
-    List<PropertyResponseDto> findAllProperties();
+    List<PropertyResponseDto> findAllProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice);
     PropertyDetailsResponseDto getPropertyDetails(String slug);
     void turnPropertyContingent(Long propertyId);
     void cancelPropertyContingency(Long propertyId);
@@ -21,5 +21,5 @@ public interface PropertyService {
     void update(Long propertyId, PropertyRequestDto propertyRequestDto);
     void delete(Long propertyId);
     User getUserByPropertySlug(String propertySlug);
-    List<Property>searchProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice);
+
 }
