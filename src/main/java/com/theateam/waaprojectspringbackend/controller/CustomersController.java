@@ -73,4 +73,9 @@ public class CustomersController {
     public void cancelOffer(@PathVariable Long offerId) {
         offerService.cancelOffer(offerId);
     }
+
+    @PutMapping("/offers/{offerId}/turnContingent")
+    public void turnPropertyContingentForCustomer(@PathVariable Long offerId){
+        offerService.turnPropertyContingentForCustomer(offerId);
+    }
 }

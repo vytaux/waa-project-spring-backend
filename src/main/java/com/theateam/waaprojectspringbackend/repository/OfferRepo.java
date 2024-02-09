@@ -18,4 +18,6 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
 
     @Query("SELECT o FROM Offer o WHERE o.property.owner.email = :name")
     List<Offer> getOffersByOwnerEmail(String name);
+
+    Offer findOfferById(Long offerId);
 }
