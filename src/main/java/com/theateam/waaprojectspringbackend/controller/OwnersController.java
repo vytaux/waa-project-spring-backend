@@ -8,6 +8,7 @@ import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.impl.PropertyServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class OwnersController {
     private final PropertyServiceImpl propertyService;
 
     @PostMapping("/properties")
-    public void createProperty(@RequestBody PropertyRequestDto propertyRequestDto) {
-        propertyService.create(propertyRequestDto);
+    public ResponseEntity<String> createProperty(@RequestBody PropertyRequestDto propertyRequestDto) {
+        return  propertyService.create(propertyRequestDto);
     }
 
     @PutMapping("/properties/{propertyId}")

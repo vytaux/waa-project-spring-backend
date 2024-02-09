@@ -10,6 +10,7 @@ import com.theateam.waaprojectspringbackend.service.PropertyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -44,17 +45,19 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyRepo.findAllByOwnerEmail(authentication.getName());
     }
 
-    public void create(PropertyRequestDto propertyRequestDto) {
+    public ResponseEntity<String> create(PropertyRequestDto propertyRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
+
         if (!user.getStatus().equals(UserStatus.STATUS_APPROVED)) {
-            return;
+            return ResponseEntity.badRequest().body("You need to be approved by our admin before you can list any properties");
         }
 
         Property property = modelMapper.map(propertyRequestDto, Property.class);
         property.setStatus(PropertyStatus.STATUS_AVAILABLE);
         property.setOwner(user);
         propertyRepo.save(property);
+        return ResponseEntity.ok("Property Listed :)");
     }
 
     public void update(Long propertyId, PropertyRequestDto propertyRequestDto) {
