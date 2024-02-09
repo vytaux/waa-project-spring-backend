@@ -6,7 +6,6 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.RegisterRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.response.LoginResponse;
 import com.theateam.waaprojectspringbackend.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

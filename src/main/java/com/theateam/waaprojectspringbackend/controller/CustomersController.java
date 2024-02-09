@@ -2,7 +2,6 @@ package com.theateam.waaprojectspringbackend.controller;
 
 import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.OfferStatus;
-import com.theateam.waaprojectspringbackend.entity.User;
 import com.theateam.waaprojectspringbackend.entity.dto.request.CreateOfferDto;
 import com.theateam.waaprojectspringbackend.entity.dto.request.SavePropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.request.UpdateOfferDto;
@@ -11,9 +10,6 @@ import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponse
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
