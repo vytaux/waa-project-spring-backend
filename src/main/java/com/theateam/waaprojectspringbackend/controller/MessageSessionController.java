@@ -22,8 +22,8 @@ public class MessageSessionController {
     }
 
     @PostMapping
-    public MessageSessionResponse save(@RequestBody MessageSessionRequest request) {
-        return service.save(request);
+    public void save(@RequestBody MessageSessionRequest request) {
+        service.save(request);
     }
 
     @GetMapping("{id}")

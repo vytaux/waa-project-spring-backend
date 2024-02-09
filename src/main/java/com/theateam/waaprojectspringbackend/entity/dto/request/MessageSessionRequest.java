@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageSessionRequest {
-    private int userOneId;
-    private int userTwoId;
-    private List<Message> messages;
+    private Long propertyId;
+    private String message;
 }
