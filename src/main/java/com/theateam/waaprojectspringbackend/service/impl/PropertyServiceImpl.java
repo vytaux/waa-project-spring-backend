@@ -8,13 +8,22 @@ import com.theateam.waaprojectspringbackend.exception.ResourceNotFoundException;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
+import com.theateam.waaprojectspringbackend.specifications.PropertySpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +35,7 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepo propertyRepo;
     private final ModelMapper modelMapper;
     private final UserRepo userRepo;
+    private final EntityManager entityManager;
 
     public void turnPropertyContingent(Long propertyId) {
         Property property = propertyRepo.findById(propertyId).orElseThrow();
@@ -73,6 +83,37 @@ public class PropertyServiceImpl implements PropertyService {
 
         propertyRepo.deleteById(propertyId);
     }
+
+    public List<Property> searchProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice) {
+        Specification<Property> spec = PropertySpecifications.searchProperties(name, description, minPrice, maxPrice);
+        return propertyRepo.findAll(spec);
+    }
+
+//
+//    public List<Property> searchProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice) {
+//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Property> criteriaQuery = criteriaBuilder.createQuery(Property.class);
+//        Root<Property> root = criteriaQuery.from(Property.class);
+//
+//        List<Predicate> predicates = new ArrayList<>();
+//
+//        if (name != null && !name.isEmpty()) {
+//            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+//        }
+//        if (description != null && !description.isEmpty()) {
+//            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + description.toLowerCase() + "%"));
+//        }
+//        if (minPrice != null) {
+//            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
+//        }
+//        if (maxPrice != null) {
+//            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
+//        }
+//
+//        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+//
+//        return entityManager.createQuery(criteriaQuery).getResultList();
+//    }
 
     @Override
     public List<PropertyResponseDto> findAllProperties() {
