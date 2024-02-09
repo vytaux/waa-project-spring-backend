@@ -5,11 +5,10 @@ import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsR
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -27,5 +26,15 @@ public class PublicController {
     @RequestMapping("/properties/{slug}")
     public PropertyDetailsResponseDto getPropertyDetails(@PathVariable String slug) {
         return propertyService.getPropertyDetails(slug);
+    }
+
+    @GetMapping("/properties/search")
+    public List<Property> searchProperties(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice
+    ){
+        return propertyService.searchProperties(name,description,minPrice,maxPrice);
     }
 }

@@ -20,11 +20,11 @@ INSERT INTO users_roles (user_id, role_id) VALUES (94, 92);
 INSERT INTO users_roles (user_id, role_id) VALUES (95, 93);
 
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (91, 'property-first', 'STATUS_AVAILABLE', 'Property 1', 'Description 1', 100000, 91);
+    VALUES (91, 'property-first', 'STATUS_AVAILABLE', 'Miami House', 'Excellent house in Miami Beach site', 100000, 91);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (92, 'property-two' , 'STATUS_AVAILABLE','Property 2', 'Description 2', 300000, 92);
+    VALUES (92, 'property-two' , 'STATUS_AVAILABLE','Iowa Golden Home', 'Beautiful House with peaceful surrounding', 300000, 92);
 INSERT INTO properties (id, slug, status, name, description, price, owner_id)
-    VALUES (93, 'property-three', 'STATUS_AVAILABLE', 'Property 3', 'Description 3', 250000, 92);
+    VALUES (93, 'property-three', 'STATUS_AVAILABLE', 'California Dream House', 'Your dream house in the heart of California downtown.', 250000, 92);
 
 -- Offer
 INSERT INTO offers (id, message, price, customer_id, status, property_id)

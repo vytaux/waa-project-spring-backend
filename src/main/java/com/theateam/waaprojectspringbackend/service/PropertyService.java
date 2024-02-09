@@ -5,6 +5,7 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDt
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsResponseDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,5 @@ public interface PropertyService {
     void create(PropertyRequestDto propertyRequestDto);
     void update(Long propertyId, PropertyRequestDto propertyRequestDto);
     void delete(Long propertyId);
+    List<Property>searchProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice);
 }
