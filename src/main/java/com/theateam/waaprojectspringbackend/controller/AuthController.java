@@ -6,6 +6,7 @@ import com.theateam.waaprojectspringbackend.entity.dto.request.RegisterRequest;
 import com.theateam.waaprojectspringbackend.entity.dto.response.LoginResponse;
 import com.theateam.waaprojectspringbackend.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @ExceptionHandler
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-           return authService.register(registerRequest);
+        try {
+            return authService.register(registerRequest);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+        }
     }
 
     @PostMapping("/login")
@@ -29,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest){
+    public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return authService.refreshToken(refreshTokenRequest);
     }
 }
