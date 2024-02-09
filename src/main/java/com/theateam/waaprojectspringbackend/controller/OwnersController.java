@@ -65,4 +65,9 @@ public class OwnersController {
     public void rejectOffer(@PathVariable Long offerId) {
         offerService.rejectOffer(offerId);
     }
+
+    @PutMapping("/properties/{id}/sellProperty")
+    public void sellProperty(@PathVariable Long id){
+        offerService.sellProperty(id);
+    }
 }

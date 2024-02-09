@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,10 +23,12 @@ public class EmailService {
     @Value("${spring.email.sender}")
     private String senderEmail;
 
+    @Async
     public void sendEmail(String recipient, String subject, String body) {
         sendEmail(Collections.singletonList(recipient), subject, body);
     }
 
+    @Async
     public void sendEmail(List<String> recipients, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderEmail);
@@ -35,6 +38,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    @Async
     public ResponseEntity<String> sendEmailFromRequest(@RequestBody Map<String, Object> request) {
         String subject = (String) request.get("subject");
         String body = (String) request.get("body");

@@ -19,4 +19,5 @@ public interface OfferService {
     void cancelOffer(Long offerId);
     void updateOffer(Long offerId, UpdateOfferDto updateOfferDto);
     void turnPropertyContingentForCustomer(Long offerId);
+    void sellProperty(Long offerId);
 }

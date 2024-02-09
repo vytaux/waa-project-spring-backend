@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class OfferServiceImpl implements OfferService {
     private final PropertyRepo propertyRepo;
     private final EmailService emailService;
 
+    @Async
     public void createOffer(CreateOfferDto createOfferDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findByEmail(authentication.getName()).orElseThrow();
@@ -83,15 +85,15 @@ public class OfferServiceImpl implements OfferService {
         propertyRepo.save(property);
 
         // Send email to customer
-        emailService.sendEmail(
-            offer.getCustomer().getEmail(),
-            "Your offer for property \"" + property.getName() + "\" has been accepted!",
-            "Your offer for property \""
-                    + property.getName()
-                    + "\" for $"
-                    + offer.getPrice()
-                    + " has been accepted. Please check your account for more details."
-        );
+//        emailService.sendEmail(
+//            offer.getCustomer().getEmail(),
+//            "Your offer for property \"" + property.getName() + "\" has been accepted!",
+//            "Your offer for property \""
+//                    + property.getName()
+//                    + "\" for $"
+//                    + offer.getPrice()
+//                    + " has been accepted. Please check your account for more details."
+//        );
     }
 
     public void rejectOffer(Long offerId) {
@@ -173,5 +175,22 @@ public class OfferServiceImpl implements OfferService {
         }
         property.setStatus(PropertyStatus.STATUS_CONTINGENT);
         propertyRepo.save(property);
+    }
+
+    @Override
+    public void sellProperty(Long id) {
+        Property property = propertyRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property with " + id + " Not Found"));
+        if(property.getStatus()!=PropertyStatus.STATUS_CONTINGENT){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Property status is not CONTINGENT");
+        }
+        property.setStatus(PropertyStatus.STATUS_SOLD);
+        propertyRepo.save(property);
+
+        // send email to owner
+        emailService.sendEmail(
+                property.getOwner().getEmail(),
+                "SOLD !",
+                "Congrats, you sold. Please check your account for more details."
+        );
     }
 }

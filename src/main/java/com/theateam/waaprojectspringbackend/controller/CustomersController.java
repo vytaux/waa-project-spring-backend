@@ -78,4 +78,5 @@ public class CustomersController {
     public void turnPropertyContingentForCustomer(@PathVariable Long offerId){
         offerService.turnPropertyContingentForCustomer(offerId);
     }
+
 }
