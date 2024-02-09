@@ -1,9 +1,9 @@
 -- password=123
-INSERT INTO users (id, email, status, password) VALUES (91, 'admin', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
-INSERT INTO users (id, email, status, password) VALUES (92, 'owner', 'STATUS_WAITING_FOR_APPROVAL', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
-INSERT INTO users (id, email, status, password) VALUES (93, 'customer', 'STATUS_WAITING_FOR_APPROVAL', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
-INSERT INTO users (id, email, status, password) VALUES (94, 'john', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
-INSERT INTO users (id, email, status, password) VALUES (95, 'jane', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (91, 'admin@miu.edu', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (92, 'owner@miu.edu', 'STATUS_WAITING_FOR_APPROVAL', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (93, 'customer@miu.edu', 'STATUS_WAITING_FOR_APPROVAL', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (94, 'john@miu.edu', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
+INSERT INTO users (id, email, status, password) VALUES (95, 'jane@miu.edu', 'STATUS_APPROVED', '$2a$10$A97KJPG9ZCW8Gc.BWP8lbOQ2L0eOYO51BpOqtFmq8QnZ/PT.j1Spm');
 
 
 INSERT INTO roles (id, roletype) VALUES (91, 'ADMIN');
