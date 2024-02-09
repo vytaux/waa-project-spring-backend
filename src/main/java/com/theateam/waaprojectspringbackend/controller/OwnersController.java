@@ -1,16 +1,15 @@
 package com.theateam.waaprojectspringbackend.controller;
 
-import com.theateam.waaprojectspringbackend.entity.Offer;
 import com.theateam.waaprojectspringbackend.entity.Property;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.OfferResponseDto;
-import com.theateam.waaprojectspringbackend.repository.OfferRepo;
 import com.theateam.waaprojectspringbackend.service.OfferService;
 import com.theateam.waaprojectspringbackend.service.impl.PropertyServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

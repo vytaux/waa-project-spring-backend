@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,6 @@ import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +37,7 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepo propertyRepo;
     private final ModelMapper modelMapper;
     private final UserRepo userRepo;
+    private final EntityManager entityManager;
 
     public void turnPropertyContingent(Long propertyId) {
         Property property = propertyRepo.findById(propertyId).orElseThrow();
