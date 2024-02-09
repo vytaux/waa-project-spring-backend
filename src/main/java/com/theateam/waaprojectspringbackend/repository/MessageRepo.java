@@ -2,7 +2,6 @@ package com.theateam.waaprojectspringbackend.repository;
 
 import com.theateam.waaprojectspringbackend.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository

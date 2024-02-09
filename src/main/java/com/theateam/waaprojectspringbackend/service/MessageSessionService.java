@@ -8,7 +8,7 @@ import java.util.List;
 public interface MessageSessionService {
     List<MessageSessionResponse> getAll();
 
-    MessageSessionResponse save(MessageSessionRequest request);
+    void save(MessageSessionRequest request);
 
     MessageSessionResponse getById(int id);
 

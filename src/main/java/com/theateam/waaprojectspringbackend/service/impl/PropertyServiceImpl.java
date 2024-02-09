@@ -4,17 +4,27 @@ import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsResponseDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
+import com.theateam.waaprojectspringbackend.exception.ResourceNotFoundException;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
+import com.theateam.waaprojectspringbackend.specifications.PropertySpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,6 +87,11 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepo.deleteById(propertyId);
     }
 
+    public List<Property> searchProperties(String name, String description, BigDecimal minPrice, BigDecimal maxPrice) {
+        Specification<Property> spec = PropertySpecifications.searchProperties(name, description, minPrice, maxPrice);
+        return propertyRepo.findAll(spec);
+    }
+
     @Override
     public List<PropertyResponseDto> findAllProperties() {
         List<Property> allProperties = propertyRepo.findAll();
@@ -90,5 +105,11 @@ public class PropertyServiceImpl implements PropertyService {
     public PropertyDetailsResponseDto getPropertyDetails(String slug) {
         Property property = propertyRepo.findBySlug(slug).orElseThrow();
         return modelMapper.map(property, PropertyDetailsResponseDto.class);
+    }
+
+    public User getUserByPropertySlug(String propertySlug) {
+        return propertyRepo.findBySlug(propertySlug)
+                .orElseThrow(() -> new ResourceNotFoundException("Property"))
+                .getOwner();
     }
 }

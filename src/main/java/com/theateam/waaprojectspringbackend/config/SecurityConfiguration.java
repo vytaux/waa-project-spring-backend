@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/admin/**").hasAuthority(RoleType.ADMIN.name())
                 .antMatchers("/api/v1/users/**").authenticated()
                 .antMatchers("/api/v1/message-sessions").authenticated()
+                .antMatchers("/api/v1/properties/{slug}/user").authenticated()
                 .antMatchers("/api/sendMail").authenticated()
                 .anyRequest().permitAll() // Allow access to all other URLs
                 .and()
