@@ -18,6 +18,5 @@ public interface PropertyService {
     void create(PropertyRequestDto propertyRequestDto);
     void update(Long propertyId, PropertyRequestDto propertyRequestDto);
     void delete(Long propertyId);
-    Optional<Property> findPropertyBySlug(String slug);
     User getUserByPropertySlug(String propertySlug);
 }
