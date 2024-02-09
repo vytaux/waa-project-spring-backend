@@ -20,7 +20,7 @@ public class SendEmailTraits {
         String body = String.format("Congratulations! An offer of $%s has been accepted by user on your property \"%s\". Please check your account for more details.",
                 offer.getPrice(), property.getName());
 
-        emailService.sendEmail(property.getOwner().getEmail(), subject, body);
+        emailService.sendEmail(offer.getCustomer().getEmail(), subject, body);
     }
 
     public void contingentProperty(Property property, Offer offer) {
