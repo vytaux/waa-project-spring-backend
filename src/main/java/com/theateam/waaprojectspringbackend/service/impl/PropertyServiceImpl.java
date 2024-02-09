@@ -4,6 +4,7 @@ import com.theateam.waaprojectspringbackend.entity.*;
 import com.theateam.waaprojectspringbackend.entity.dto.request.PropertyRequestDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyDetailsResponseDto;
 import com.theateam.waaprojectspringbackend.entity.dto.response.PropertyResponseDto;
+import com.theateam.waaprojectspringbackend.exception.ResourceNotFoundException;
 import com.theateam.waaprojectspringbackend.repository.PropertyRepo;
 import com.theateam.waaprojectspringbackend.repository.UserRepo;
 import com.theateam.waaprojectspringbackend.service.PropertyService;
@@ -15,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,5 +87,11 @@ public class PropertyServiceImpl implements PropertyService {
     public PropertyDetailsResponseDto getPropertyDetails(String slug) {
         Property property = propertyRepo.findBySlug(slug).orElseThrow();
         return modelMapper.map(property, PropertyDetailsResponseDto.class);
+    }
+
+    public User getUserByPropertySlug(String propertySlug) {
+        return propertyRepo.findBySlug(propertySlug)
+                .orElseThrow(() -> new ResourceNotFoundException("Property"))
+                .getOwner();
     }
 }
