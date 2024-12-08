@@ -32,6 +32,6 @@ public class Property {
     private User owner;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "property")
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
     private List<Offer> offers = new ArrayList<>();
 }
