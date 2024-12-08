@@ -1,0 +1,68 @@
+name: Deploy Spring Boot App
+
+on:
+  workflow_dispatch: # manual trigger
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_NAME: 'waa-project-spring-backend'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+      - name: Create directory on EC2
+        run: |
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} "mkdir -p ~/${{ env.APP_NAME }}"
+
+      - name: Copy JAR to EC2
+        run: |
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no target/${{ env.APP_NAME }}-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:~/${{ env.APP_NAME }}/app.jar
+
+      - name: Stop old Spring Boot app on EC2
+        run: |
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            PID=$(pgrep -f "app.jar")
+            if [ -n "$PID" ]; then
+              echo "Stopping existing Spring Boot app with PID: $PID"
+              sudo -E kill $PID
+              sleep 10
+              if ps -p $PID > /dev/null; then
+                echo "Process did not terminate gracefully, force killing."
+                sudo -E kill -9 $PID
+              fi
+            else
+              echo "No existing Spring Boot app found"
+            fi
+          EOF
+
+      - name: Run the Spring Boot app on EC2 with Environment Variables
+        run: |
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            export DB_HOST="${{ secrets.DB_HOST }}"
+            export DB_PORT="${{ secrets.DB_PORT }}"
+            export DB_USERNAME="${{ secrets.DB_USERNAME }}"
+            export DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+            export DB_NAME="${{ secrets.DB_NAME }}"
+            export API_LISTENING_PORT="${{ secrets.API_LISTENING_PORT }}"
+            sudo -E nohup java -jar ~/${{ env.APP_NAME }}/app.jar > ~/${{ env.APP_NAME }}/app.log 2>&1 &
+          EOF
