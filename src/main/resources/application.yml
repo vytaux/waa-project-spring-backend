@@ -7,13 +7,16 @@ spring:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:db}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     defer-datasource-initialization: true
     generate-ddl: true
   sql:
     init:
       mode: always
+      # update with data.sql would throw duplicate key on insert, this allows
+      # fixtures script to continue
+      continue-on-error: true
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525
