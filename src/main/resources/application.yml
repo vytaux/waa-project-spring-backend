@@ -2,16 +2,12 @@ spring:
   application:
     name: Property Management System
   datasource:
-    username: pms
-    password: pms
-    url: jdbc:postgresql://localhost:5432/pms
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:pass}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:db}
   jpa:
     hibernate:
       ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
     show-sql: true
     defer-datasource-initialization: true
     generate-ddl: true
@@ -32,4 +28,4 @@ spring:
   email:
     sender: notifications@nexthome.com
 server:
-  port: 8080
+  port: ${API_LISTENING_PORT:8080}

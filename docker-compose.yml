@@ -1,11 +1,21 @@
 services:
 
-  postgres:
-    container_name: pms_db
-    image: postgres
-    environment:
-      POSTGRES_USER: pms
-      POSTGRES_PASSWORD: pms
+  mysql:
+    image: mysql:8.0
     ports:
-      - "5432:5432"
-    restart: unless-stopped
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+      - MYSQL_ROOT_PASSWORD=12345
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 3s
+      timeout: 60s
+      retries: 10
+
+volumes:
+  mysql-data:
