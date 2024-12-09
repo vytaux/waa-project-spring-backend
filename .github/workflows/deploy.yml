@@ -41,17 +41,18 @@ jobs:
       - name: Stop old Spring Boot app on EC2
         run: |
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-            PID=$(pgrep -f "app.jar")
+            PORT=${{ secrets.API_LISTENING_PORT }}
+            PID=$(sudo netstat -tuln | grep ":$PORT" | awk '{print $7}' | cut -d'/' -f1)
             if [ -n "$PID" ]; then
-              echo "Stopping existing Spring Boot app with PID: $PID"
-              sudo -E kill $PID
+              echo "Stopping Spring Boot app running on port $PORT with PID: $PID"
+              sudo kill $PID
               sleep 10
               if ps -p $PID > /dev/null; then
                 echo "Process did not terminate gracefully, force killing."
-                sudo -E kill -9 $PID
+                sudo kill -9 $PID
               fi
             else
-              echo "No existing Spring Boot app found"
+              echo "No application running on port $PORT"
             fi
           EOF
 
