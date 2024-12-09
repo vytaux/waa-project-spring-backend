@@ -42,7 +42,7 @@ jobs:
         run: |
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
             PORT=${{ secrets.API_LISTENING_PORT }}
-            PID=$(sudo ss -tulnp | grep ":$PORT" | awk '{print $6}' | cut -d',' -f2 | cut -d'=' -f2)
+            PID=$(sudo ss -tulnp | grep ":$PORT" | awk -F'[=,]' '{print $3}')
             if [ -n "$PID" ]; then
               echo "Stopping Spring Boot app running on port $PORT with PID: $PID"
               sudo kill $PID
