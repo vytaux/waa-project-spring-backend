@@ -9,9 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "users", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user_id", "role_id"})
-})
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +31,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "role_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
     )
     private List<Role> roles = new ArrayList<>();
 
