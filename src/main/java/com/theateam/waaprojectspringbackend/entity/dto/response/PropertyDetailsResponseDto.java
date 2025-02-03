@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class PropertyDetailsResponseDto {
     long id;
     String name;
+    String shortDescription;
     String description;
     String slug;
     BigDecimal price;

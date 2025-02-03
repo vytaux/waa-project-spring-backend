@@ -17,7 +17,12 @@ public class Property {
     private long id;
 
     private String name;
+
+    private String shortDescription;
+
+    @Lob
     private String description;
+
     private String slug;
 
     @Column(precision = 10, scale = 2)
